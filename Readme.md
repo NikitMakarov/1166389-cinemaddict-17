@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Никита Макаров](https://up.htmlacademy.ru/ecmascript/17/user/1166389).
-* Наставник: `Антон Евдокимов`.
+* Наставник: [Антон Евдокимов](https://up.htmlacademy.ru/ecmascript/17/user/1398023).
 
 ---
 
