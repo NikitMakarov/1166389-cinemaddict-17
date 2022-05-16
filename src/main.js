@@ -9,13 +9,14 @@ const siteMainElement = document.querySelector('.main');
 const siteBody = document.querySelector('body');
 const filmsModel = new FilmsModel();
 const filmsPresenter = new FilmsPresenter();
+const comments = filmsModel.getComments();
 
 render(new ProfileView(), siteHeaderElement);
 
 filmsPresenter.init(siteMainElement, filmsModel);
 
 for (const film of filmsModel.getFilms()) {
-  const comments = filmsModel.getComments().filter((comment) => film.comments.includes(Number(comment.id)));
+  const filteredComments = comments.filter((comment) => film.comments.includes(comment.filmId));
 
-  render(new PopUpView(film, comments), siteBody);
+  render(new PopUpView(film, filteredComments), siteBody);
 }
