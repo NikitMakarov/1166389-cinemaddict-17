@@ -16,8 +16,10 @@ export default class FilmsPresenter {
   filmsList = new FilmsListView();
   filmsComponent = new FilmsContainerView();
 
-  init = (filmsContainer) => {
+  init = (filmsContainer, filmsModel) => {
     this.filmsContainer = filmsContainer;
+    this.filmsModel = filmsModel;
+    this.listFilms = [...this.filmsModel.getFilms()];
 
     render(new NavigationView(), this.filmsContainer);
     render(new FilterView(), this.filmsContainer);
@@ -25,8 +27,8 @@ export default class FilmsPresenter {
     render(this.filmsList, this.filmsSection.getElement());
     render(this.filmsComponent, this.filmsList.getElement());
 
-    for (let i = 0; i < 5; i++) {
-      render(new FilmCardView(), this.filmsComponent.getElement());
+    for (let i = 0; i < this.listFilms.length; i++) {
+      render(new FilmCardView(this.listFilms[i]), this.filmsComponent.getElement());
     }
 
     render(new ShowMoreBtnView(), this.filmsList.getElement());
