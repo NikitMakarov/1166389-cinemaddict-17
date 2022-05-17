@@ -35,9 +35,7 @@ export default class FilmsPresenter {
     render(this.#filmsList, this.#filmsSection.element);
     render(this.#filmsComponent, this.#filmsList.element);
 
-    for (let i = 0; i < this.#listFilms.length; i++) {
-      this.#renderFilm(this.#listFilms[i]);
-    }
+    this.#listFilms.forEach(this.#renderFilm);
 
     render(new ShowMoreBtnView(), this.#filmsList.element);
     render(new FilmsTopRatedView(), this.#filmsSection.element);
