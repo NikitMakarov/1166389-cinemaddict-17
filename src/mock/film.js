@@ -1,4 +1,4 @@
-import { getRandomInteger } from '../utils.js';
+import { getRandomInteger } from '../utils/common.js';
 
 export const generateFilm = () => ({
   id: getRandomInteger(0, 5),

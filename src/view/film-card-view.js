@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizeDate} from '../utils.js';
-import {formatRuntime} from '../utils.js';
+import {humanizeDate} from '../utils/task.js';
+import {formatRuntime} from '../utils/task.js';
 
 const BLANK_FILM = {
   title: 'Sagebrush Trail',
@@ -21,7 +21,7 @@ const BLANK_FILM = {
 const createFilmCardTemplate = (film) => {
   const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description} = film;
 
-  const releaseDate = release.date !== null ? humanizeDate(release.date, 'YYYY') : '';
+  const releaseDate = humanizeDate(release.date, 'YYYY');
   return (`
   <article class="film-card">
     <a class="film-card__link">

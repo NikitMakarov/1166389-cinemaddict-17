@@ -11,7 +11,7 @@ import FilmsTopRatedView from '../view/films-top-rated-view.js';
 import FilmsMostCommentedView from '../view/films-most-commented-view.js';
 import PopUpView from '../view/popup-view.js';
 
-import {render} from '../framework/render.js';
+import {render, remove} from '../framework/render.js';
 
 const FILM_COUNT_PER_STEP = 5;
 
@@ -48,8 +48,7 @@ export default class FilmsPresenter {
     this.#renderedFilmCount += FILM_COUNT_PER_STEP;
 
     if (this.#renderedFilmCount >= this.#listFilms.length) {
-      this.#showMoreComponent.element.remove();
-      this.#showMoreComponent.removeElement();
+      remove(this.#showMoreComponent);
     }
   };
 
