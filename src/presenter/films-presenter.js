@@ -11,7 +11,7 @@ import FilmsTopRatedView from '../view/films-top-rated-view.js';
 import FilmsMostCommentedView from '../view/films-most-commented-view.js';
 import PopUpView from '../view/popup-view.js';
 
-import {render} from '../render.js';
+import {render} from '../framework/render.js';
 
 const FILM_COUNT_PER_STEP = 5;
 
