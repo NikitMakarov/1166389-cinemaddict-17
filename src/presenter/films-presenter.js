@@ -11,7 +11,7 @@ import FilmsTopRatedView from '../view/films-top-rated-view.js';
 import FilmsMostCommentedView from '../view/films-most-commented-view.js';
 import PopUpView from '../view/popup-view.js';
 
-import {render} from '../render.js';
+import {render, remove} from '../framework/render.js';
 
 const FILM_COUNT_PER_STEP = 5;
 
@@ -40,8 +40,7 @@ export default class FilmsPresenter {
     this.#renderFilmList();
   };
 
-  #handleLoadMoreButtonClick = (evt) => {
-    evt.preventDefault();
+  #handleLoadMoreButtonClick = () => {
     this.#listFilms
       .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_PER_STEP)
       .forEach((film) => this.#renderFilm(film));
@@ -49,8 +48,7 @@ export default class FilmsPresenter {
     this.#renderedFilmCount += FILM_COUNT_PER_STEP;
 
     if (this.#renderedFilmCount >= this.#listFilms.length) {
-      this.#showMoreComponent.element.remove();
-      this.#showMoreComponent.removeElement();
+      remove(this.#showMoreComponent);
     }
   };
 
@@ -80,12 +78,12 @@ export default class FilmsPresenter {
       }
     };
 
-    filmComponent.element.querySelector('.film-card__link').addEventListener('click', () => {
+    filmComponent.setOpenPopUpClickHandler(() => {
       createPopUp();
       document.addEventListener('keydown', onEscKeyDown);
     });
 
-    popUpComponent.element.querySelector('.film-details__close-btn').addEventListener('click', () => {
+    popUpComponent.setClosePopUpClickHandler(() => {
       removePopUp();
       document.removeEventListener('keydown', onEscKeyDown);
     });
@@ -111,7 +109,7 @@ export default class FilmsPresenter {
       if (this.#listFilms.length > FILM_COUNT_PER_STEP) {
         render(this.#showMoreComponent, this.#filmsList.element);
 
-        this.#showMoreComponent.element.addEventListener('click', this.#handleLoadMoreButtonClick);
+        this.#showMoreComponent.setShowMoreClickHandler(this.#handleLoadMoreButtonClick);
       }
     }
 

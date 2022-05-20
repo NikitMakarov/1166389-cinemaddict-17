@@ -1,11 +1,26 @@
-import {createElement} from '../render.js';
-import {humanizeDate} from '../utils.js';
-import {formatRuntime} from '../utils.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import {humanizeDate, formatRuntime} from '../utils/task.js';
+
+const BLANK_FILM = {
+  title: 'Sagebrush Trail',
+  alternativeTitle: 'An Innocent Man',
+  totalRating: '7.8',
+  poster: 'images/posters/sagebrush-trail.jpg',
+  release: {
+    date: '1933-12-15T00:00:00.000Z',
+    releaseCountry: 'United States'
+  },
+  runtime: 54,
+  genres: [
+    'Western'
+  ],
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.'
+};
 
 const createFilmCardTemplate = (film) => {
   const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description} = film;
 
-  const releaseDate = release.date !== null ? humanizeDate(release.date, 'YYYY') : '';
+  const releaseDate = humanizeDate(release.date, 'YYYY');
   return (`
   <article class="film-card">
     <a class="film-card__link">
@@ -29,11 +44,11 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-export default class FilmCardView {
-  #element = null;
+export default class FilmCardView extends AbstractView {
   #film = null;
 
-  constructor(film) {
+  constructor(film = BLANK_FILM) {
+    super();
     this.#film = film;
   }
 
@@ -41,15 +56,13 @@ export default class FilmCardView {
     return createFilmCardTemplate(this.#film);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setOpenPopUpClickHandler = (callback) => {
+    this._callback.openPopUp = callback;
+    this.element.querySelector('.film-card__link').addEventListener('click', this.#openPopUpClickHandler);
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #openPopUpClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.openPopUp();
+  };
 }

@@ -1,11 +1,10 @@
-import {createElement} from '../render.js';
-import {humanizeDate} from '../utils.js';
-import {formatRuntime} from '../utils.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import {humanizeDate, formatRuntime} from '../utils/task.js';
 
 const createPopUpTemplate = (film, comments) => {
   const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description, ageRating, director, writers, actors} = film;
   const {releaseCountry} = release;
-  const releaseDate = release.date !== null ? humanizeDate(release.date, 'DD MMM YYYY') : '';
+  const releaseDate = humanizeDate(release.date, 'DD MMM YYYY');
 
   const createGenreTemplate = (filmGenres) => {
     let template = '';
@@ -20,7 +19,7 @@ const createPopUpTemplate = (film, comments) => {
 
     for (const filmComment of filmComments) {
       const {author, comment, date, emotion} = filmComment;
-      const commentDate = date !== null ? humanizeDate(date, 'YYYY-MM-DD, h:mm') : '';
+      const commentDate = humanizeDate(date, 'YYYY-MM-DD, h:mm');
 
       template += `
       <li class="film-details__comment">
@@ -152,12 +151,12 @@ const createPopUpTemplate = (film, comments) => {
   );
 };
 
-export default class PopUpView {
-  #element = null;
+export default class PopUpView extends AbstractView {
   #film = null;
   #comments = null;
 
   constructor(film, comments) {
+    super();
     this.#film = film;
     this.#comments = comments;
   }
@@ -166,15 +165,13 @@ export default class PopUpView {
     return createPopUpTemplate(this.#film, this.#comments);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setClosePopUpClickHandler = (callback) => {
+    this._callback.closePopUp = callback;
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#closePopUpClickHandler);
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #closePopUpClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.closePopUp();
+  };
 }
