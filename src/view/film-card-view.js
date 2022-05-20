@@ -1,6 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizeDate} from '../utils/task.js';
-import {formatRuntime} from '../utils/task.js';
+import {humanizeDate, formatRuntime} from '../utils/task.js';
 
 const BLANK_FILM = {
   title: 'Sagebrush Trail',
