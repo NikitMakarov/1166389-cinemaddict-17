@@ -1,7 +1,8 @@
 import { getRandomInteger } from '../utils/common.js';
+import {nanoid} from 'nanoid';
 
 export const generateFilm = () => ({
-  id: getRandomInteger(0, 5),
+  id: nanoid(),
   comments: [1, 2, 4],
   title: 'Sagebrush Trail',
   alternativeTitle: 'An Innocent Man',
@@ -24,5 +25,8 @@ export const generateFilm = () => ({
   genres: [
     'Western'
   ],
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.',
+  isWatchList: Boolean(getRandomInteger(0, 1)),
+  isWatched: Boolean(getRandomInteger(0, 1)),
+  isFavorite: Boolean(getRandomInteger(0, 1)),
 });

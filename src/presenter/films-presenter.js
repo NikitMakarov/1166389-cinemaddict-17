@@ -10,6 +10,7 @@ import FilmsMostCommentedView from '../view/films-most-commented-view.js';
 import FilmPresenter from './film-presenter.js';
 
 import {render, RenderPosition, remove} from '../framework/render.js';
+import {updateItem} from '../utils/common.js';
 
 const FILM_COUNT_PER_STEP = 5;
 
@@ -27,6 +28,7 @@ export default class FilmsPresenter {
 
   #listFilms = [];
   #renderedFilmCount = FILM_COUNT_PER_STEP;
+  #filmPresenter = new Map();
 
   constructor(filmsContainer, filmsModel) {
     this.#filmsContainer = filmsContainer;
@@ -51,8 +53,9 @@ export default class FilmsPresenter {
   };
 
   #renderFilm = (film) => {
-    const filmPresenter = new FilmPresenter(this.#filmsComponent.element, this.#filmsComments);
+    const filmPresenter = new FilmPresenter(this.#filmsComponent.element, this.#filmsComments, this.#handleFilmChange, this.#handleModeChange);
     filmPresenter.init(film);
+    this.#filmPresenter.set(film.id, filmPresenter);
   };
 
   #renderFilmList = () => {
@@ -89,6 +92,22 @@ export default class FilmsPresenter {
     render(this.#showMoreComponent, this.#filmsList.element);
 
     this.#showMoreComponent.setShowMoreClickHandler(this.#handleLoadMoreButtonClick);
+  };
+
+  #handleModeChange = () => {
+    this.#filmPresenter.forEach((presenter) => presenter.resetView());
+  };
+
+  #handleFilmChange = (updatedFilm) => {
+    this.#listFilms = updateItem(this.#listFilms, updatedFilm);
+    this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
+  };
+
+  #clearFilmList = () => {
+    this.#filmPresenter.forEach((presenter) => presenter.destroy());
+    this.#filmPresenter.clear();
+    this.#renderedFilmCount = FILM_COUNT_PER_STEP;
+    remove(this.#showMoreComponent);
   };
 
   #renderFilter = () => {
