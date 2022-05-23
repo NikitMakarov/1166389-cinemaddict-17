@@ -80,8 +80,7 @@ export default class FilmPresenter {
 
   #createPopUp = () => {
     this.#siteBody.appendChild(this.#popUpComponent.element);
-    this.#siteBody.setAttribute('class', 'hide-overflow');
-    this.#popUpComponent.element.removeAttribute('hidden');
+    this.#siteBody.classList.add('hide-overflow');
 
     this.#changeMode();
     this.#mode = Mode.POPUP;
@@ -89,8 +88,7 @@ export default class FilmPresenter {
 
   #removePopUp = () => {
     this.#siteBody.removeChild(this.#popUpComponent.element);
-    this.#siteBody.removeAttribute('class', 'hide-overflow');
-    this.#popUpComponent.element.setAttribute('hidden', '');
+    this.#siteBody.classList.remove('hide-overflow');
 
     this.#mode = Mode.DEFAULT;
   };

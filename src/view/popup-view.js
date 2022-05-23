@@ -190,18 +190,15 @@ export default class PopUpView extends AbstractView {
     this._callback.closePopUp(this.#film, this.#comments);
   };
 
-  #watchListClickHandler = (evt) => {
-    evt.preventDefault();
+  #watchListClickHandler = () => {
     this._callback.watchListClick();
   };
 
-  #watchedClickHandler = (evt) => {
-    evt.preventDefault();
+  #watchedClickHandler = () => {
     this._callback.watchedClick();
   };
 
-  #favoriteClickHandler = (evt) => {
-    evt.preventDefault();
+  #favoriteClickHandler = () => {
     this._callback.favoriteClick();
   };
 }
