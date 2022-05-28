@@ -199,7 +199,7 @@ export default class PopUpView extends AbstractStatefulView {
 
   #closePopUpClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.closePopUp(PopUpView.parseStateToData(this._state));
+    this._callback.closePopUp(this._state);
   };
 
   #watchListClickHandler = () => {
@@ -244,10 +244,4 @@ export default class PopUpView extends AbstractStatefulView {
     ...film,
     comments,
   });
-
-  static parseStateToData = (state) => {
-    const film = {...state};
-
-    return film;
-  };
 }
