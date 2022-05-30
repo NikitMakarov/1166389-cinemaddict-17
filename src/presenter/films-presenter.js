@@ -1,6 +1,6 @@
 
 import FilmsContainerView from '../view/films-container-view.js';
-import FilterView from '../view/filter-view.js';
+import SortView from '../view/sort-view.js';
 import ShowMoreBtnView from '../view/show-more-button-view.js';
 import FilmSection from '../view/films-section.js';
 import FilmsListView  from '../view/films-list-view.js';
@@ -11,6 +11,8 @@ import FilmPresenter from './film-presenter.js';
 
 import {render, RenderPosition, remove} from '../framework/render.js';
 import {updateItem} from '../utils/common.js';
+import {sortFilmDate, sortFilmRating} from '../utils/task.js';
+import {SortType} from '../const.js';
 
 const FILM_COUNT_PER_STEP = 5;
 
@@ -22,13 +24,15 @@ export default class FilmsPresenter {
   #filmsSection = new FilmSection();
   #filmsList = new FilmsListView();
   #filmsComponent = new FilmsContainerView();
-  #filterComponent = new FilterView();
+  #sortComponent = new SortView();
   #noFilmComponent = new FilmsListEmptyView();
   #showMoreComponent = new ShowMoreBtnView();
 
   #listFilms = [];
   #renderedFilmCount = FILM_COUNT_PER_STEP;
   #filmPresenter = new Map();
+  #currentSortType = SortType.DEFAULT;
+  #sourcedFilms = [];
 
   constructor(filmsContainer, filmsModel) {
     this.#filmsContainer = filmsContainer;
@@ -37,6 +41,7 @@ export default class FilmsPresenter {
 
   init = () => {
     this.#listFilms = [...this.#filmsModel.films];
+    this.#sourcedFilms = [...this.#filmsModel.films];
     this.#filmsComments = this.#filmsModel.comments;
 
     this.#renderFilmList();
@@ -59,21 +64,10 @@ export default class FilmsPresenter {
   };
 
   #renderFilmList = () => {
-    this.#renderFilter();
+    this.#renderSort();
     this.#renderSection();
     this.#renderList();
-
-    if (this.#listFilms.length === 0) {
-      this.#renderNoFilms();
-    } else {
-      render(this.#filmsComponent, this.#filmsList.element);
-      this.#renderFilms(0, Math.min(this.#listFilms.length, FILM_COUNT_PER_STEP));
-
-      if (this.#listFilms.length > FILM_COUNT_PER_STEP) {
-        this.#renderShowMoreButton();
-      }
-    }
-
+    this.#renderDisplayedFilms();
     this.#renderTopRatedView();
     this.#renderMostCommentedView();
   };
@@ -100,6 +94,7 @@ export default class FilmsPresenter {
 
   #handleFilmChange = (updatedFilm) => {
     this.#listFilms = updateItem(this.#listFilms, updatedFilm);
+    this.#sourcedFilms = updateItem(this.#sourcedFilms, updatedFilm);
     this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
   };
 
@@ -110,8 +105,34 @@ export default class FilmsPresenter {
     remove(this.#showMoreComponent);
   };
 
-  #renderFilter = () => {
-    render(this.#filterComponent, this.#filmsList.element, RenderPosition.AFTERBEGIN);
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortFilms(sortType);
+    this.#clearFilmList();
+    this.#renderDisplayedFilms();
+  };
+
+  #sortFilms = (sortType) => {
+    switch (sortType) {
+      case SortType.DATE:
+        this.#listFilms.sort(sortFilmDate);
+        break;
+      case SortType.RATING:
+        this.#listFilms.sort(sortFilmRating);
+        break;
+      default:
+        this.#listFilms = [...this.#sourcedFilms];
+    }
+
+    this.#currentSortType = sortType;
+  };
+
+  #renderSort = () => {
+    render(this.#sortComponent, this.#filmsList.element, RenderPosition.AFTERBEGIN);
+    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
   #renderSection = () => {
@@ -120,6 +141,19 @@ export default class FilmsPresenter {
 
   #renderList = () => {
     render(this.#filmsList, this.#filmsSection.element, RenderPosition.BEFOREEND);
+  };
+
+  #renderDisplayedFilms = () => {
+    if (this.#listFilms.length === 0) {
+      this.#renderNoFilms();
+    } else {
+      render(this.#filmsComponent, this.#filmsList.element);
+      this.#renderFilms(0, Math.min(this.#listFilms.length, FILM_COUNT_PER_STEP));
+
+      if (this.#listFilms.length > FILM_COUNT_PER_STEP) {
+        this.#renderShowMoreButton();
+      }
+    }
   };
 
   #renderTopRatedView = () => {

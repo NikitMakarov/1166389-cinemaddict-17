@@ -12,4 +12,10 @@ const formatRuntime = (runtime) => {
   return output;
 };
 
-export {humanizeDate, formatRuntime};
+// Функция сортировки фильмов по дате выпуска
+const sortFilmDate = (filmA, filmB) => humanizeDate(filmA.release.date, 'YYYY') - humanizeDate(filmB.release.date, 'YYYY');
+
+// Функция сортировки фильмов по пользовательскому рейтингу
+const sortFilmRating = (filmA, filmB) => filmB.totalRating - filmA.totalRating;
+
+export {humanizeDate, formatRuntime, sortFilmDate, sortFilmRating};

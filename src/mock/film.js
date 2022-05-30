@@ -18,7 +18,7 @@ export const generateFilm = () => ({
     'John Wayne'
   ],
   release: {
-    date: '1933-12-15T00:00:00.000Z',
+    date: `${getRandomInteger(1920, 1960)}-12-15T00:00:00.000Z`,
     releaseCountry: 'United States'
   },
   runtime: getRandomInteger(54, 180),
