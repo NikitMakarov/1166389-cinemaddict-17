@@ -12,10 +12,13 @@ const formatRuntime = (runtime) => {
   return output;
 };
 
+// Функция добавляющая ноль если число однозначное
+const getLeadingZero = (number) => (`0${number}`).slice(-2);
+
 // Функция сортировки фильмов по дате выпуска
-const sortFilmDate = (filmA, filmB) => humanizeDate(filmA.release.date, 'YYYY') - humanizeDate(filmB.release.date, 'YYYY');
+const sortFilmDate = (filmA, filmB) => new Date(humanizeDate(filmA.release.date, 'YYYY-MM-DD')) - new Date(humanizeDate(filmB.release.date, 'YYYY-MM-DD'));
 
 // Функция сортировки фильмов по пользовательскому рейтингу
 const sortFilmRating = (filmA, filmB) => filmB.totalRating - filmA.totalRating;
 
-export {humanizeDate, formatRuntime, sortFilmDate, sortFilmRating};
+export {humanizeDate, formatRuntime, getLeadingZero, sortFilmDate, sortFilmRating};
