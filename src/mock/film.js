@@ -1,4 +1,5 @@
-import { getRandomInteger } from '../utils/common.js';
+import {getRandomInteger} from '../utils/common.js';
+import {getLeadingZero} from '../utils/task.js';
 import {nanoid} from 'nanoid';
 
 export const generateFilm = () => ({
@@ -18,7 +19,7 @@ export const generateFilm = () => ({
     'John Wayne'
   ],
   release: {
-    date: '1933-12-15T00:00:00.000Z',
+    date: `${getRandomInteger(1920, 1960)}-${getLeadingZero(getRandomInteger(1, 12))}-${getLeadingZero(getRandomInteger(1, 31))}T00:00:00.000Z`,
     releaseCountry: 'United States'
   },
   runtime: getRandomInteger(54, 180),

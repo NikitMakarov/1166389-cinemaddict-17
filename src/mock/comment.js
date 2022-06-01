@@ -1,4 +1,4 @@
-import { getRandomInteger } from '../utils/common.js';
+import {getRandomInteger} from '../utils/common.js';
 
 export const generateComment = () => (
   {
