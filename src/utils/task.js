@@ -1,4 +1,7 @@
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 // Функция из dayjs для преобразования даты
 const humanizeDate = (date, format) => (date && format) ? dayjs(date).format(format) : '';
@@ -12,6 +15,9 @@ const formatRuntime = (runtime) => {
   return output;
 };
 
+// Функция преобразовывающая дату в относительную дату
+const formatRelativeTime = (runtime) => dayjs().to(dayjs(runtime));
+
 // Функция добавляющая ноль если число однозначное
 const getLeadingZero = (number) => (`0${number}`).slice(-2);
 
@@ -21,4 +27,4 @@ const sortFilmDate = (filmA, filmB) => new Date(humanizeDate(filmA.release.date,
 // Функция сортировки фильмов по пользовательскому рейтингу
 const sortFilmRating = (filmA, filmB) => filmB.totalRating - filmA.totalRating;
 
-export {humanizeDate, formatRuntime, getLeadingZero, sortFilmDate, sortFilmRating};
+export {humanizeDate, formatRuntime, formatRelativeTime, getLeadingZero, sortFilmDate, sortFilmRating};

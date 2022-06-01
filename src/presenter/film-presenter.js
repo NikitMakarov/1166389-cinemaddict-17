@@ -56,15 +56,14 @@ export default class FilmPresenter {
       return;
     }
 
-    if (this.#mode === Mode.DEFAULT) {
-      replace(this.#filmComponent, prevFilmComponent);
-      remove(prevFilmComponent);
-    }
+    replace(this.#filmComponent, prevFilmComponent);
 
     if (this.#mode === Mode.POPUP) {
       replace(this.#popUpComponent, prevPopUpComponent);
-      remove(prevPopUpComponent);
     }
+
+    remove(prevFilmComponent);
+    remove(prevPopUpComponent);
   };
 
   destroy = () => {
