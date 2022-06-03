@@ -1,5 +1,5 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import {humanizeDate, formatRuntime} from '../utils/task.js';
+import {humanizeDate, formatRuntime, formatRelativeTime} from '../utils/task.js';
 
 const createPopUpTemplate = (data) => {
   const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description, ageRating, director, writers, actors, isFavorite, isWatchList, isWatched, comments, selectedEmoji, inputComment, clickedInput} = data;
@@ -23,7 +23,7 @@ const createPopUpTemplate = (data) => {
 
     for (const filmComment of filmComments) {
       const {author, comment, date, emotion} = filmComment;
-      const commentDate = humanizeDate(date, 'YYYY-MM-DD, h:mm');
+      const commentDate = humanizeDate(date, 'YYYY/MM/DD, h:mm');
 
       template += `
       <li class="film-details__comment">
@@ -34,7 +34,7 @@ const createPopUpTemplate = (data) => {
           <p class="film-details__comment-text">${comment}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
-            <span class="film-details__comment-day">${commentDate}</span>
+            <span class="film-details__comment-day">${formatRelativeTime(commentDate)}</span>
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>
