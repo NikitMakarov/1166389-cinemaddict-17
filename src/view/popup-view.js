@@ -23,7 +23,7 @@ const createPopUpTemplate = (data) => {
 
     for (const filmComment of filmComments) {
       const {author, comment, date, emotion} = filmComment;
-      const commentDate = humanizeDate(date, 'YYYY-MM-DD, h:mm');
+      const commentDate = humanizeDate(date, 'YYYY/MM/DD, h:mm');
 
       template += `
       <li class="film-details__comment">
