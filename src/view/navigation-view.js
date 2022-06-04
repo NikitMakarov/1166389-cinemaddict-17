@@ -1,31 +1,54 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {capitalizeName} from '../utils/filter.js';
 
-const createFilterItemTemplate = (filter) => {
-  const {name, count} = filter;
-  return `<a href="#${name}" class="main-navigation__item">${capitalizeName(name)} <span class="main-navigation__item-count">${count}</span></a>`;
+const createFilterItemTemplate = (filter, currentFilterType) => {
+  const {name, count, type} = filter;
+  return `<a href="#${name}" class="main-navigation__item ${currentFilterType === type ? 'main-navigation__item--active' : ''}" value="${type}">${capitalizeName(name)} <span class="main-navigation__item-count">${count}</span></a>`;
 };
 
-const createNavigationTemplate = (filters) => {
+const createNavigationTemplate = (filters, currentFilterType) => {
   const filterItemsTemplate = (filterItems) => filterItems
-    .map((item) => createFilterItemTemplate(item))
+    .map((item) => createFilterItemTemplate(item, currentFilterType))
     .join('');
 
   return `<nav class="main-navigation">
-    <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
     ${filterItemsTemplate(filters)}
   </nav>`;
 };
 
 export default class NavigationView extends AbstractView {
   #filters = null;
+  #currentFilter = null;
 
-  constructor(filters) {
+  constructor(filters, currentFilterType) {
     super();
     this.#filters = filters;
+    this.#currentFilter = currentFilterType;
   }
 
   get template() {
-    return createNavigationTemplate(this.#filters);
+    return createNavigationTemplate(this.#filters, this.#currentFilter);
   }
+
+  setFilterTypeClickHandler = (callback) => {
+    this._callback.filterTypeClick = callback;
+    this.element.addEventListener('click', this.#filterTypeClickHandler);
+  };
+
+  #filterTypeClickHandler = (evt) => {
+    if (evt.target.tagName !== 'A') {
+      return;
+    }
+
+    //console.log(evt.target);
+    //console.log(evt.target.getAttribute('value'));
+
+    /*const navButtons = this.element.querySelectorAll('.main-navigation__item');
+    navButtons.forEach((btn) => btn === evt.target ?
+      btn.classList.add('main-navigation__item--active') :
+      btn.classList.remove('main-navigation__item--active'));*/
+
+    evt.preventDefault();
+    this._callback.filterTypeClick(evt.target.getAttribute('value'));
+  };
 }

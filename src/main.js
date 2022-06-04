@@ -1,18 +1,18 @@
 import ProfileView from './view/profile-view.js';
 import {render} from './framework/render.js';
-import NavigationView from './view/navigation-view.js';
 import FilmsPresenter from './presenter/films-presenter.js';
 import FilmsModel from './model/films-model.js';
-import {generateFilter} from './mock/filter.js';
+import FilterPresenter from './presenter/filter-presenter.js';
+import FilterModel from './model/filter-model.js';
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 const filmsModel = new FilmsModel();
-const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel);
+const filterModel = new FilterModel();
+const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterModel);
+const filterPresenter = new FilterPresenter(siteMainElement, filterModel, filmsModel);
 
-const filters = generateFilter(filmsModel.films);
-
-render(new NavigationView(filters), siteMainElement);
 render(new ProfileView(), siteHeaderElement);
 
+filterPresenter.init();
 filmsPresenter.init();

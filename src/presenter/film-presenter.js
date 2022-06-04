@@ -1,5 +1,6 @@
 import PopUpView from '../view/popup-view.js';
 import FilmCardView from '../view/film-card-view.js';
+import {UserAction, UpdateType} from '../const.js';
 
 import {render, replace, remove} from '../framework/render.js';
 
@@ -86,31 +87,51 @@ export default class FilmPresenter {
   };
 
   #removePopUp = () => {
-    this.#siteBody.removeChild(this.#popUpComponent.element);
     this.#siteBody.classList.remove('hide-overflow');
 
     this.#mode = Mode.DEFAULT;
   };
 
   #handleWatchListClick = () => {
-    this.#changeData({...this.#film, isWatchList: !this.#film.isWatchList});
+    this.#changeData(
+      UserAction.UPDATE_FILM,
+      this.#mode === Mode.DEFAULT ? UpdateType.MINOR : UpdateType.PATCH,
+      {...this.#film, isWatchList: !this.#film.isWatchList},
+    );
   };
 
   #handleWatchedClick = () => {
-    this.#changeData({...this.#film, isWatched: !this.#film.isWatched});
+    this.#changeData(
+      UserAction.UPDATE_FILM,
+      this.#mode === Mode.DEFAULT ? UpdateType.MINOR : UpdateType.PATCH,
+      {...this.#film, isWatched: !this.#film.isWatched},
+    );
   };
 
   #handleFavoriteClick = () => {
-    this.#changeData({...this.#film, isFavorite: !this.#film.isFavorite});
+    this.#changeData(
+      UserAction.UPDATE_FILM,
+      this.#mode === Mode.DEFAULT ? UpdateType.MINOR : UpdateType.PATCH,
+      {...this.#film, isFavorite: !this.#film.isFavorite},
+    );
   };
 
   #setOpenPopUpClickHandler = (film) => {
-    this.#changeData(film);
+    this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.PATCH,
+      film
+    );
     this.#createPopUp();
     document.addEventListener('keydown', this.#onEscKeyDown);
   };
 
-  #setClosePopUpClickHandler = () => {
+  #setClosePopUpClickHandler = (film) => {
+    this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.MAJOR,
+      film
+    );
     this.#removePopUp();
   };
 
@@ -118,6 +139,7 @@ export default class FilmPresenter {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       document.removeEventListener('keydown', this.#onEscKeyDown);
+      this.#siteBody.removeChild(this.#popUpComponent.element);
       this.#removePopUp();
     }
   };
