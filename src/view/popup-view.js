@@ -22,7 +22,7 @@ const createPopUpTemplate = (data) => {
     let template = '';
 
     for (const filmComment of filmComments) {
-      const {author, comment, date, emotion} = filmComment;
+      const {author, comment, date, emotion, filmId} = filmComment;
       const commentDate = humanizeDate(date, 'YYYY/MM/DD, h:mm');
 
       template += `
@@ -35,7 +35,7 @@ const createPopUpTemplate = (data) => {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
             <span class="film-details__comment-day">${formatRelativeTime(commentDate)}</span>
-            <button class="film-details__comment-delete">Delete</button>
+            <button class="film-details__comment-delete" id="${filmId}">Delete</button>
           </p>
         </div>
       </li>`;
@@ -174,6 +174,7 @@ export default class PopUpView extends AbstractStatefulView {
     this.setWatchListClickHandler(this._callback.watchListClick);
     this.setWatchedClickHandler(this._callback.watchedClick);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setDeleteClickHandler(this._callback.deleteClick);
     this.setClosePopUpClickHandler(this._callback.closePopUp);
   };
 
@@ -195,6 +196,15 @@ export default class PopUpView extends AbstractStatefulView {
   setFavoriteClickHandler = (callback) => {
     this._callback.favoriteClick = callback;
     this.element.querySelector('.film-details__control-button--favorite').addEventListener('click', this.#favoriteClickHandler);
+  };
+
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.film-details__comments-list').addEventListener('click', this.#deleteClickHandler);
+  };
+
+  #deleteClickHandler = (evt) => {
+    this._callback.deleteClick(evt);
   };
 
   #closePopUpClickHandler = (evt) => {

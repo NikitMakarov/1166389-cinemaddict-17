@@ -12,9 +12,9 @@ const SortType = {
 };
 
 const UserAction = {
-  GET_FILM: 'GET_FILM',
+  ADD_COMMENT: 'ADD',
   UPDATE_FILM: 'UPDATE_FILM',
-  SAVE_FILM: 'DELETE_FILM',
+  DELETE_COMMENT: 'DELETE',
 };
 
 const UpdateType = {

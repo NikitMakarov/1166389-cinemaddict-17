@@ -29,4 +29,15 @@ export default class FilmsModel extends Observable {
 
     this._notify(updateType, update);
   };
+
+  deleteComment = (updateType, film, evt) => {
+    const index = this.#comments.findIndex((comment) => comment.filmId === parseInt(evt.target.id, 10));
+
+    if (index === -1) {
+      throw new Error('Can\'t delete unexisting comment');
+    }
+
+    this.#comments.splice(index, 1);
+    this._notify(updateType, film);
+  };
 }

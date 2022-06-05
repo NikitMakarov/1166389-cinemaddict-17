@@ -50,7 +50,7 @@ export default class FilmPresenter {
     this.#popUpComponent.setWatchListClickHandler(this.#handleWatchListClick);
     this.#popUpComponent.setWatchedClickHandler(this.#handleWatchedClick);
     this.#popUpComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
-
+    this.#popUpComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
     if (prevFilmComponent === null || prevPopUpComponent === null) {
       render(this.#filmComponent, this.#filmContainer);
@@ -113,6 +113,15 @@ export default class FilmPresenter {
       UserAction.UPDATE_FILM,
       this.#mode === Mode.DEFAULT ? UpdateType.MINOR : UpdateType.PATCH,
       {...this.#film, isFavorite: !this.#film.isFavorite},
+    );
+  };
+
+  #handleDeleteClick = (evt) => {
+    this.#changeData(
+      UserAction.DELETE_COMMENT,
+      UpdateType.PATCH,
+      {...this.#film},
+      evt
     );
   };
 

@@ -114,16 +114,13 @@ export default class FilmsPresenter {
     this.#filmPresenter.forEach((presenter) => presenter.resetView());
   };
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = (actionType, updateType, update, evt) => {
     switch (actionType) {
-      case UserAction.GET_FILM:
-        this.#filmsModel.getFilm(updateType, update);
-        break;
       case UserAction.UPDATE_FILM:
         this.#filmsModel.updateFilm(updateType, update);
         break;
-      case UserAction.SAVE_FILM:
-        this.#filmsModel.saveFilm(updateType, update);
+      case UserAction.DELETE_COMMENT:
+        this.#filmsModel.deleteComment(updateType, update, evt);
         break;
     }
   };
