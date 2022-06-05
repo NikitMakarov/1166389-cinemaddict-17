@@ -40,14 +40,6 @@ export default class NavigationView extends AbstractView {
       return;
     }
 
-    //console.log(evt.target);
-    //console.log(evt.target.getAttribute('value'));
-
-    /*const navButtons = this.element.querySelectorAll('.main-navigation__item');
-    navButtons.forEach((btn) => btn === evt.target ?
-      btn.classList.add('main-navigation__item--active') :
-      btn.classList.remove('main-navigation__item--active'));*/
-
     evt.preventDefault();
     this._callback.filterTypeClick(evt.target.getAttribute('value'));
   };

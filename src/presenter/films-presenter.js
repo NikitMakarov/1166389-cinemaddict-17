@@ -11,7 +11,7 @@ import FilmPresenter from './film-presenter.js';
 import {render, RenderPosition, remove} from '../framework/render.js';
 import {sortFilmDate, sortFilmRating} from '../utils/task.js';
 import {filter} from '../utils/filter.js';
-import {SortType, UserAction, UpdateType} from '../const.js';
+import {SortType, UserAction, UpdateType, FilterType} from '../const.js';
 
 const FILM_COUNT_PER_STEP = 5;
 
@@ -23,7 +23,7 @@ export default class FilmsPresenter {
   #filmsSection = new FilmSection();
   #filmsList = new FilmsListView();
   #filmsComponent = new FilmsContainerView();
-  #noFilmComponent = new FilmsListEmptyView();
+  #noFilmComponent = null;
   #sortComponent = null;
   #showMoreComponent = null;
   #topRatedComponent = null;
@@ -32,6 +32,7 @@ export default class FilmsPresenter {
   #renderedFilmCount = FILM_COUNT_PER_STEP;
   #filmPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
+  #filterType = FilterType.ALL;
 
   constructor(filmsContainer, filmsModel, filterModel) {
     this.#filmsContainer = filmsContainer;
@@ -43,9 +44,9 @@ export default class FilmsPresenter {
   }
 
   get films() {
-    const filterType = this.#filterModel.filter;
+    this.#filterType = this.#filterModel.filter;
     const films = this.#filmsModel.films;
-    const filteredFilms = filter[filterType](films);
+    const filteredFilms = filter[this.#filterType](films);
 
     switch (this.#currentSortType) {
       case SortType.DATE:
@@ -99,7 +100,8 @@ export default class FilmsPresenter {
   };
 
   #renderNoFilms = () => {
-    render(this.#noFilmComponent, this.#filmsList.element, RenderPosition.AFTERBEGIN);
+    this.#noFilmComponent = new FilmsListEmptyView(this.#filterType);
+    render(this.#noFilmComponent, this.#filmsList.element);
   };
 
   #renderShowMoreButton = () => {
@@ -154,6 +156,10 @@ export default class FilmsPresenter {
 
     if (resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
+    }
+
+    if (this.#noFilmComponent) {
+      remove(this.#noFilmComponent);
     }
 
     remove(this.#sortComponent);
