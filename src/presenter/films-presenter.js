@@ -59,7 +59,6 @@ export default class FilmsPresenter {
   }
 
   get comments() {
-
     return this.#filmsModel.comments;
   }
 
@@ -116,6 +115,9 @@ export default class FilmsPresenter {
 
   #handleViewAction = (actionType, updateType, update, evt) => {
     switch (actionType) {
+      case UserAction.ADD_COMMENT:
+        this.#filmsModel.addComment(updateType, update);
+        break;
       case UserAction.UPDATE_FILM:
         this.#filmsModel.updateFilm(updateType, update);
         break;
@@ -131,7 +133,6 @@ export default class FilmsPresenter {
         this.#filmPresenter.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
-
         this.#filmPresenter.get(data.id).init(data);
         this.#clearFilmBoard();
         this.#renderFilmList();

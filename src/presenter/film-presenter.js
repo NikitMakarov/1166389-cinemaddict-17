@@ -51,6 +51,7 @@ export default class FilmPresenter {
     this.#popUpComponent.setWatchedClickHandler(this.#handleWatchedClick);
     this.#popUpComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#popUpComponent.setDeleteClickHandler(this.#handleDeleteClick);
+    this.#popUpComponent.setAddCommentHandler(this.#handleAddComment);
 
     if (prevFilmComponent === null || prevPopUpComponent === null) {
       render(this.#filmComponent, this.#filmContainer);
@@ -122,6 +123,14 @@ export default class FilmPresenter {
       UpdateType.PATCH,
       {...this.#film},
       evt
+    );
+  };
+
+  #handleAddComment = (state) => {
+    this.#changeData(
+      UserAction.ADD_COMMENT,
+      UpdateType.PATCH,
+      state
     );
   };
 

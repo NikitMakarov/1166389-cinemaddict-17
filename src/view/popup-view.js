@@ -176,6 +176,7 @@ export default class PopUpView extends AbstractStatefulView {
     this.setFavoriteClickHandler(this._callback.favoriteClick);
     this.setDeleteClickHandler(this._callback.deleteClick);
     this.setClosePopUpClickHandler(this._callback.closePopUp);
+    this.setAddCommentHandler(this._callback.addComment);
   };
 
   setClosePopUpClickHandler = (callback) => {
@@ -201,6 +202,21 @@ export default class PopUpView extends AbstractStatefulView {
   setDeleteClickHandler = (callback) => {
     this._callback.deleteClick = callback;
     this.element.querySelector('.film-details__comments-list').addEventListener('click', this.#deleteClickHandler);
+  };
+
+  setAddCommentHandler = (callback) => {
+    this._callback.addComment = callback;
+    this.element.querySelector('.film-details__comment-input').addEventListener('keydown', this.#addInputHandler);
+  };
+
+  #addInputHandler = (evt) => {
+    if (evt.key === 'Enter' && (evt.ctrlKey || evt.metaKey)) {
+      evt.preventDefault();
+
+      if (this._state.inputComment && this._state.selectedEmoji) {
+        this._callback.addComment(this._state);
+      }
+    }
   };
 
   #deleteClickHandler = (evt) => {

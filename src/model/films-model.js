@@ -40,4 +40,21 @@ export default class FilmsModel extends Observable {
     this.#comments.splice(index, 1);
     this._notify(updateType, film);
   };
+
+  addComment = (updateType, update) => {
+    const newComment = {
+      filmId: 1,
+      author: 'mock author',
+      comment: update.inputComment,
+      date: '2019-06-03T11:12:32.554Z',
+      emotion: update.selectedEmoji
+    };
+
+    this.#comments = [
+      newComment,
+      ...this.#comments,
+    ];
+
+    this._notify(updateType, update);
+  };
 }
