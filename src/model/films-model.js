@@ -46,15 +46,11 @@ export default class FilmsModel extends Observable {
       filmId: 1,
       author: 'mock author',
       comment: update.inputComment,
-      date: '2019-06-03T11:12:32.554Z',
+      date: new Date(),
       emotion: update.selectedEmoji
     };
 
-    this.#comments = [
-      newComment,
-      ...this.#comments,
-    ];
-
+    this.#comments.push(newComment);
     this._notify(updateType, update);
   };
 }

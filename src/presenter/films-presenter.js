@@ -133,7 +133,6 @@ export default class FilmsPresenter {
         this.#filmPresenter.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
-        this.#filmPresenter.get(data.id).init(data);
         this.#clearFilmBoard();
         this.#renderFilmList();
         break;
