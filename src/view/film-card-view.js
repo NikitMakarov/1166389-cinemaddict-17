@@ -18,7 +18,7 @@ const BLANK_FILM = {
 };
 
 const createFilmCardTemplate = (film) => {
-  const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description, isFavorite, isWatchList, isWatched} = film;
+  const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description, comments, isFavorite, isWatchList, isWatched} = film;
 
   const releaseDate = humanizeDate(release.date, 'YYYY');
   return (`
@@ -33,7 +33,7 @@ const createFilmCardTemplate = (film) => {
       </p>
       <img src="${poster}" alt="${alternativeTitle}" class="film-card__poster">
       <p class="film-card__description">${description}</p>
-      <span class="film-card__comments">5 comments</span>
+      <span class="film-card__comments">${comments.length} comments</span>
     </a>
     <div class="film-card__controls">
       <button class="film-card__controls-item ${isWatchList ? 'film-card__controls-item--active' : ''} film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>

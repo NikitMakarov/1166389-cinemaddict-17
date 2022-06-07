@@ -273,6 +273,8 @@ export default class PopUpView extends AbstractStatefulView {
 
   static parseDataToState = (film, comments) => ({
     ...film,
+    inputComment: '',
+    selectedEmoji: '',
     comments,
   });
 }
