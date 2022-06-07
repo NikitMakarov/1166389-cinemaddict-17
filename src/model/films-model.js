@@ -27,6 +27,9 @@ export default class FilmsModel extends Observable {
       ...this.#films.slice(index + 1),
     ];
 
+    const updatedIndexes = update.comments.map((comment) => comment.filmId ? comment.filmId : comment);
+    update.comments = updatedIndexes;
+
     this._notify(updateType, update);
   };
 
@@ -49,6 +52,9 @@ export default class FilmsModel extends Observable {
       date: new Date(),
       emotion: update.selectedEmoji
     };
+
+    const updatedIndexes = update.comments.map((comment) => comment.filmId ? comment.filmId : comment);
+    update.comments = updatedIndexes;
 
     this.#comments.push(newComment);
     this._notify(updateType, update);
