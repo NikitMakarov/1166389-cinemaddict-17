@@ -53,7 +53,6 @@ export default class FilmsModel extends Observable {
       emotion: update.selectedEmoji
     };
 
-    update.comments.map((comment) => comment.filmId);
     const updatedIndexes = update.comments.map((comment) => comment.filmId ? comment.filmId : comment);
 
     if (update.comments.length === 0) {
