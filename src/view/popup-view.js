@@ -254,12 +254,11 @@ export default class PopUpView extends AbstractStatefulView {
     evt.preventDefault();
     if (evt.target.alt === 'emoji') {
       const emojiName = evt.target.parentNode.getAttribute('for').slice(6);
-      const scroll = this.element.scrollTop;
       const clickedInput = this.element.querySelector(`#emoji-${emojiName}`);
 
       this.updateElement({selectedEmoji: emojiName, clickedInput: clickedInput.value});
-      this.element.scrollTo(0, scroll);
     }
+    this.#restoreScrollPosition();
   };
 
   #commentInputHandler = (evt) => {
