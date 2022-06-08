@@ -258,9 +258,8 @@ export default class PopUpView extends AbstractStatefulView {
   };
 
   #commentInputHandler = (evt) => {
-    evt.preventDefault();
     this._setState({
-      inputComment: `${evt.target.value}`,
+      inputComment: evt.target.value,
     });
   };
 
