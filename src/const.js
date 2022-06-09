@@ -18,9 +18,9 @@ const UserAction = {
 };
 
 const UpdateType = {
-  PATCH: 'PATCH',
-  MINOR: 'MINOR',
-  MAJOR: 'MAJOR',
+  SHOWPOPUP: 'SHOWPOPUP',
+  SHOWFILMLIST: 'SHOWFILMLIST',
+  SHOWBOARD: 'SHOWBOARD',
 };
 
 export {FilterType, SortType, UserAction, UpdateType};

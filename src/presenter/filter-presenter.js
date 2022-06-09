@@ -72,6 +72,6 @@ export default class NavigationFilterPresenter {
       return;
     }
 
-    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
+    this.#filterModel.setFilter(UpdateType.SHOWBOARD, filterType);
   };
 }
