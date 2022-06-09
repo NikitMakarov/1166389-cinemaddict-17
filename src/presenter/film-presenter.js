@@ -97,7 +97,7 @@ export default class FilmPresenter {
   #handleWatchListClick = () => {
     this.#changeData(
       UserAction.UPDATE_FILM,
-      this.#mode === Mode.DEFAULT ? UpdateType.SHOWFILMLIST : UpdateType.SHOWPOPUP,
+      this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
       {...this.#film, isWatchList: !this.#film.isWatchList},
     );
   };
@@ -105,7 +105,7 @@ export default class FilmPresenter {
   #handleWatchedClick = () => {
     this.#changeData(
       UserAction.UPDATE_FILM,
-      this.#mode === Mode.DEFAULT ? UpdateType.SHOWFILMLIST : UpdateType.SHOWPOPUP,
+      this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
       {...this.#film, isWatched: !this.#film.isWatched},
     );
   };
@@ -113,7 +113,7 @@ export default class FilmPresenter {
   #handleFavoriteClick = () => {
     this.#changeData(
       UserAction.UPDATE_FILM,
-      this.#mode === Mode.DEFAULT ? UpdateType.SHOWFILMLIST : UpdateType.SHOWPOPUP,
+      this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
       {...this.#film, isFavorite: !this.#film.isFavorite},
     );
   };
@@ -121,7 +121,7 @@ export default class FilmPresenter {
   #handleDeleteClick = (evt) => {
     this.#changeData(
       UserAction.DELETE_COMMENT,
-      UpdateType.SHOWPOPUP,
+      UpdateType.SHOW_POPUP,
       {...this.#film},
       evt
     );
@@ -130,7 +130,7 @@ export default class FilmPresenter {
   #handleAddComment = (state) => {
     this.#changeData(
       UserAction.ADD_COMMENT,
-      UpdateType.SHOWPOPUP,
+      UpdateType.SHOW_POPUP,
       state
     );
   };
@@ -138,7 +138,7 @@ export default class FilmPresenter {
   #setOpenPopUpClickHandler = (film) => {
     this.#changeData(
       UserAction.UPDATE_FILM,
-      UpdateType.SHOWPOPUP,
+      UpdateType.SHOW_POPUP,
       film
     );
     this.#createPopUp();
@@ -148,7 +148,7 @@ export default class FilmPresenter {
   #setClosePopUpClickHandler = (film) => {
     this.#changeData(
       UserAction.UPDATE_FILM,
-      UpdateType.SHOWFILMLIST,
+      UpdateType.SHOW_FILM_LIST,
       film
     );
     this.#removePopUp();

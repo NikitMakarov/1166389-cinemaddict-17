@@ -129,14 +129,14 @@ export default class FilmsPresenter {
 
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
-      case UpdateType.SHOWPOPUP:
+      case UpdateType.SHOW_POPUP:
         this.#filmPresenter.get(data.id).init(data);
         break;
-      case UpdateType.SHOWFILMLIST:
+      case UpdateType.SHOW_FILM_LIST:
         this.#clearFilmBoard();
         this.#renderFilmList();
         break;
-      case UpdateType.SHOWBOARD:
+      case UpdateType.SHOW_BOARD:
         this.#clearFilmBoard({resetRenderedFilmCount: true, resetSortType: true});
         this.#renderFilmList();
         break;

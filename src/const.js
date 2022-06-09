@@ -18,9 +18,9 @@ const UserAction = {
 };
 
 const UpdateType = {
-  SHOWPOPUP: 'SHOWPOPUP',
-  SHOWFILMLIST: 'SHOWFILMLIST',
-  SHOWBOARD: 'SHOWBOARD',
+  SHOW_POPUP: 'SHOW_POPUP',
+  SHOW_FILM_LIST: 'SHOW_FILM_LIST',
+  SHOW_BOARD: 'SHOW_BOARD',
 };
 
 export {FilterType, SortType, UserAction, UpdateType};
