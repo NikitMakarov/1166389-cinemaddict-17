@@ -1,10 +1,15 @@
 import Observable from '../framework/observable.js';
-import {generateFilm} from '../mock/film.js';
-import {generateComment} from '../mock/comment.js';
+import {UpdateType} from '../const.js';
 
 export default class FilmsModel extends Observable {
-  #films = Array.from({length: 17}, generateFilm);
-  #comments = Array.from({length: 10}, generateComment);
+  #filmsApiService = null;
+  #films = [];
+  #comments = [];
+
+  constructor(filmsApiService) {
+    super();
+    this.#filmsApiService = filmsApiService;
+  }
 
   get comments() {
     return this.#comments;
@@ -14,23 +19,40 @@ export default class FilmsModel extends Observable {
     return this.#films;
   }
 
-  updateFilm = (updateType, update) => {
+  init = async () => {
+    try {
+      const films = await this.#filmsApiService.films;
+      this.#films = films.map(this.#adaptToClient);
+    } catch(err) {
+      this.#films = [];
+    }
+
+    this._notify(UpdateType.INIT_DATA);
+  };
+
+  updateFilm = async (updateType, update) => {
     const index = this.#films.findIndex((film) => film.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting film');
     }
 
-    this.#films = [
-      ...this.#films.slice(0, index),
-      update,
-      ...this.#films.slice(index + 1),
-    ];
+    try {
+      const response = await this.#filmsApiService.updateFilm(update);
+      const updatedFilm = this.#adaptToClient(response);
+      this.#films = [
+        ...this.#films.slice(0, index),
+        updatedFilm,
+        ...this.#films.slice(index + 1),
+      ];
 
-    const updatedIndexes = update.comments.map((comment) => comment.filmId ? comment.filmId : comment);
-    update.comments = updatedIndexes;
+      const updatedIndexes = updatedFilm.comments.map((comment) => comment.filmId ? comment.filmId : comment);
+      updatedFilm.comments = updatedIndexes;
 
-    this._notify(updateType, update);
+      this._notify(updateType, updatedFilm);
+    } catch (err) {
+      throw new Error('Can\'t update film');
+    }
   };
 
   deleteComment = (updateType, film, evt) => {
@@ -64,5 +86,42 @@ export default class FilmsModel extends Observable {
 
     this.#comments.push(newComment);
     this._notify(updateType, update);
+  };
+
+  #adaptToClient = (film) => {
+    const {comments, film_info, user_details} = film;
+    const {actors, age_rating, alternative_title, description, director, genre, poster, release, runtime, title, total_rating, writers} = film_info;
+    const {already_watched, favorite, watching_date, watchlist} = user_details;
+    const {date, release_country} = release;
+
+    const dateRelease = {
+      date: date !== null ? new Date(date) : date,
+      releaseCountry: release_country,
+    };
+
+    const adaptedFilmToClient = {...film,
+      comments: comments,
+      actors: actors,
+      ageRating: age_rating,
+      alternativeTitle: alternative_title,
+      description: description,
+      genres: genre,
+      director: director,
+      poster: poster,
+      release: dateRelease,
+      runtime: runtime,
+      title: title,
+      totalRating: total_rating,
+      writers: writers,
+      watchingDate: watching_date !== null ? new Date(watching_date) : watching_date,
+      isFavorite: favorite,
+      isWatched: already_watched,
+      isWatchList: watchlist
+    };
+
+    delete adaptedFilmToClient.film_info;
+    delete adaptedFilmToClient.user_details;
+
+    return adaptedFilmToClient;
   };
 }
