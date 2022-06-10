@@ -192,11 +192,12 @@ export default class FilmsPresenter {
 
   #renderDisplayedFilms = () => {
     const filmCount = this.films.length;
-    const films = this.films.slice(0, Math.min(filmCount, this.#renderedFilmCount));
 
     if (filmCount === 0) {
       this.#renderNoFilms();
     } else {
+      const films = this.films.slice(0, Math.min(filmCount, this.#renderedFilmCount));
+
       render(this.#filmsComponent, this.#filmsList.element);
       this.#renderFilms(films);
 

@@ -20,7 +20,7 @@ export default class NavigationFilterPresenter {
   }
 
   get filters() {
-    const films = this.#filmsModel.films;
+    const {films} = this.#filmsModel;
 
     return [
       {
@@ -47,7 +47,7 @@ export default class NavigationFilterPresenter {
   }
 
   init = () => {
-    const filters = this.filters;
+    const {filters} = this;
     const prevFilterComponent = this.#filterComponent;
 
     this.#filterComponent = new NavigationView(filters, this.#filterModel.filter);

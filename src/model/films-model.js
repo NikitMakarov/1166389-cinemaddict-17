@@ -34,7 +34,8 @@ export default class FilmsModel extends Observable {
   };
 
   deleteComment = (updateType, film, evt) => {
-    const index = this.#comments.findIndex((comment) => comment.filmId === parseInt(evt.target.id, 10));
+    const buttonId = parseInt(evt.target.id, 10);
+    const index = this.#comments.findIndex((comment) => comment.filmId === buttonId);
 
     if (index === -1) {
       throw new Error('Can\'t delete unexisting comment');
