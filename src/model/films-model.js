@@ -89,34 +89,29 @@ export default class FilmsModel extends Observable {
   };
 
   #adaptToClient = (film) => {
-    const {comments, film_info, user_details} = film;
-    const {actors, age_rating, alternative_title, description, director, genre, poster, release, runtime, title, total_rating, writers} = film_info;
-    const {already_watched, favorite, watching_date, watchlist} = user_details;
-    const {date, release_country} = release;
-
     const dateRelease = {
-      date: date !== null ? new Date(date) : date,
-      releaseCountry: release_country,
+      'date': film.film_info.release.date !== null ? new Date(film.film_info.release.date) : film.film_info.release.date,
+      'releaseCountry': film.film_info.release.release_country,
     };
 
     const adaptedFilmToClient = {...film,
-      comments: comments,
-      actors: actors,
-      ageRating: age_rating,
-      alternativeTitle: alternative_title,
-      description: description,
-      genres: genre,
-      director: director,
-      poster: poster,
-      release: dateRelease,
-      runtime: runtime,
-      title: title,
-      totalRating: total_rating,
-      writers: writers,
-      watchingDate: watching_date !== null ? new Date(watching_date) : watching_date,
-      isFavorite: favorite,
-      isWatched: already_watched,
-      isWatchList: watchlist
+      'comments': film.comments,
+      'actors': film.film_info.actors,
+      'ageRating': film.film_info.age_rating,
+      'alternativeTitle': film.film_info.alternative_title,
+      'description': film.film_info.description,
+      'genres': film.film_info.genre,
+      'director': film.film_info.director,
+      'poster': film.film_info.poster,
+      'release': dateRelease,
+      'runtime': film.film_info.runtime,
+      'title': film.film_info.title,
+      'totalRating': film.film_info.total_rating,
+      'writers': film.film_info.writers,
+      'watchingDate': film.user_details.watching_date !== null ? new Date(film.user_details.watching_date) : film.user_details.watching_date,
+      'isFavorite': film.user_details.favorite,
+      'isWatched': film.user_details.already_watched,
+      'isWatchList': film.user_details.watchlist
     };
 
     delete adaptedFilmToClient.film_info;

@@ -18,13 +18,10 @@ const formatRuntime = (runtime) => {
 // Функция преобразовывающая дату в относительную дату
 const formatRelativeTime = (runtime) => dayjs().to(dayjs(runtime));
 
-// Функция добавляющая ноль если число однозначное
-const getLeadingZero = (number) => (`0${number}`).slice(-2);
-
 // Функция сортировки фильмов по дате выпуска
 const sortFilmDate = (filmA, filmB) => new Date(humanizeDate(filmA.release.date, 'YYYY-MM-DD')) - new Date(humanizeDate(filmB.release.date, 'YYYY-MM-DD'));
 
 // Функция сортировки фильмов по пользовательскому рейтингу
 const sortFilmRating = (filmA, filmB) => filmB.totalRating - filmA.totalRating;
 
-export {humanizeDate, formatRuntime, formatRelativeTime, getLeadingZero, sortFilmDate, sortFilmRating};
+export {humanizeDate, formatRuntime, formatRelativeTime, sortFilmDate, sortFilmRating};

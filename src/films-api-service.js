@@ -35,36 +35,36 @@ export default class FilmsApiService extends ApiService {
     const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description, ageRating, director, writers, actors, isFavorite, isWatchList, isWatched, comments, watchingDate} = film;
     const {date, releaseCountry} = release;
     const dateRelease = {
-      date: date !== null ? new Date(date) : date,
-      release_country: releaseCountry,
+      'date': date !== null ? new Date(date) : date,
+      'release_country': releaseCountry,
     };
 
     const userDetails = {
-      already_watched: isWatched,
-      favorite: isFavorite,
-      watching_date: watchingDate,
-      watchlist: isWatchList
+      'already_watched': isWatched,
+      'favorite': isFavorite,
+      'watching_date': watchingDate,
+      'watchlist': isWatchList
     };
 
     const filmInfo = {
-      actors: actors,
-      age_rating: ageRating,
-      alternative_title: alternativeTitle,
-      description: description,
-      director: director,
-      genre: genres,
-      poster: poster,
-      release: dateRelease,
-      runtime: runtime,
-      title: title,
-      total_rating: totalRating,
-      writers: writers,
+      'actors': actors,
+      'age_rating': ageRating,
+      'alternative_title': alternativeTitle,
+      'description': description,
+      'director': director,
+      'genre': genres,
+      'poster': poster,
+      'release': dateRelease,
+      'runtime': runtime,
+      'title': title,
+      'total_rating': totalRating,
+      'writers': writers,
     };
 
     const adaptedFilmToServer = {...film,
-      comments: comments,
-      film_info: filmInfo,
-      user_details: userDetails,
+      'comments': comments,
+      'film_info': filmInfo,
+      'user_details': userDetails,
     };
 
     delete adaptedFilmToServer.actors;
