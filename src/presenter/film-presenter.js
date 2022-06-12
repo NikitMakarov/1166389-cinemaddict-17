@@ -18,15 +18,11 @@ export default class FilmPresenter {
   #mode = Mode.DEFAULT;
 
   #siteBody = null;
-  #filteredComments = null;
   #filmComponent = null;
   #popUpComponent = null;
 
-  #filmsComments = null;
-
-  constructor(filmContainer, filmsComments, changeData, changeMode) {
+  constructor(filmContainer, changeData, changeMode) {
     this.#filmContainer = filmContainer;
-    this.#filmsComments = filmsComments;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
   }
@@ -38,9 +34,9 @@ export default class FilmPresenter {
     const prevPopUpComponent = this.#popUpComponent;
 
     this.#siteBody = document.querySelector('body');
-    this.#filteredComments = this.#filmsComments.filter((comment) => film.comments.includes(comment.filmId));
+
     this.#filmComponent = new FilmCardView(film);
-    this.#popUpComponent = new PopUpView(film, this.#filteredComments);
+    this.#popUpComponent = new PopUpView(film, this.#mode);
 
     this.#filmComponent.setOpenPopUpClickHandler(this.#setOpenPopUpClickHandler);
     this.#filmComponent.setWatchListClickHandler(this.#handleWatchListClick);

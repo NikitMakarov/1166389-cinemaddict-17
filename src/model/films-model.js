@@ -38,18 +38,19 @@ export default class FilmsModel extends Observable {
     }
 
     try {
-      const response = await this.#filmsApiService.updateFilm(update);
+      const filmClearComments = this.#insertComments(update, []);
+      const response = await this.#filmsApiService.updateFilm(filmClearComments);
       const updatedFilm = this.#adaptToClient(response);
+      const filmComments = await this.#filmsApiService.getComments(update);
+      const fullFilm = this.#insertComments(updatedFilm, filmComments);
+
       this.#films = [
         ...this.#films.slice(0, index),
         updatedFilm,
         ...this.#films.slice(index + 1),
       ];
 
-      const updatedIndexes = updatedFilm.comments.map((comment) => comment.filmId ? comment.filmId : comment);
-      updatedFilm.comments = updatedIndexes;
-
-      this._notify(updateType, updatedFilm);
+      this._notify(updateType, fullFilm);
     } catch (err) {
       throw new Error('Can\'t update film');
     }
@@ -86,6 +87,14 @@ export default class FilmsModel extends Observable {
 
     this.#comments.push(newComment);
     this._notify(updateType, update);
+  };
+
+  #insertComments = (film, comments) => {
+    const insertedComments = {...film,
+      'comments': comments,
+    };
+
+    return insertedComments;
   };
 
   #adaptToClient = (film) => {

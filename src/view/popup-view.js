@@ -32,7 +32,7 @@ const createPopUpTemplate = (data) => {
           <img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">
         </span>
         <div>
-          <p class="film-details__comment-text">${he.encode(comment)}</p>
+          <p class="film-details__comment-text">${comment ? he.encode(comment) : ''}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
             <span class="film-details__comment-day">${formatRelativeTime(commentDate)}</span>
@@ -117,7 +117,7 @@ const createPopUpTemplate = (data) => {
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
         <ul class="film-details__comments-list">
-          ${createCommentTemplate(comments)}
+          ${data.mode === 'POPUP' ? createCommentTemplate(data.comments) : ''}
         </ul>
 
         <div class="film-details__new-comment">
@@ -159,9 +159,9 @@ const createPopUpTemplate = (data) => {
 export default class PopUpView extends AbstractStatefulView {
   _state = null;
 
-  constructor(film, comments) {
+  constructor(film, mode) {
     super();
-    this._state = PopUpView.parseDataToState(film, comments);
+    this._state = PopUpView.parseDataToState(film, mode);
 
     this.#setInnerHandlers();
   }
@@ -285,10 +285,10 @@ export default class PopUpView extends AbstractStatefulView {
     this.element.addEventListener('scroll', this.#scrollHandler);
   };
 
-  static parseDataToState = (film, comments) => ({
+  static parseDataToState = (film, mode) => ({
     ...film,
     inputComment: '',
     selectedEmoji: '',
-    comments
+    mode
   });
 }
