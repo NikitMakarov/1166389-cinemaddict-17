@@ -61,10 +61,6 @@ export default class FilmsPresenter {
     return filteredFilms;
   }
 
-  get comments() {
-    return this.#filmsModel.comments;
-  }
-
   init = () => {
     this.#renderFilmList();
   };

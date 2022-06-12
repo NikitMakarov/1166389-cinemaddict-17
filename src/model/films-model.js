@@ -4,15 +4,10 @@ import {UpdateType} from '../const.js';
 export default class FilmsModel extends Observable {
   #filmsApiService = null;
   #films = [];
-  #comments = [];
 
   constructor(filmsApiService) {
     super();
     this.#filmsApiService = filmsApiService;
-  }
-
-  get comments() {
-    return this.#comments;
   }
 
   get films() {
@@ -79,14 +74,13 @@ export default class FilmsModel extends Observable {
     try {
       const newComment = {
         id: update.id,
-        author: 'mock author',
         comment: update.inputComment,
         date: new Date(),
         emotion: update.selectedEmoji
       };
 
-      await this.#filmsApiService.addComment(newComment);
-      update.comments.push(newComment);
+      const response = await this.#filmsApiService.addComment(newComment);
+      update.comments.push(response.comments[response.comments.length - 1]);
       this._notify(updateType, update);
     } catch(err) {
       throw new Error('Can\'t add comment');
