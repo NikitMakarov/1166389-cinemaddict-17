@@ -23,7 +23,7 @@ const createPopUpTemplate = (data) => {
     let template = '';
 
     for (const filmComment of filmComments) {
-      const {author, comment, date, emotion, filmId} = filmComment;
+      const {author, comment, date, emotion, id} = filmComment;
       const commentDate = humanizeDate(date, 'YYYY/MM/DD, h:mm');
 
       template += `
@@ -36,7 +36,7 @@ const createPopUpTemplate = (data) => {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
             <span class="film-details__comment-day">${formatRelativeTime(commentDate)}</span>
-            <button class="film-details__comment-delete" id="${filmId}">Delete</button>
+            <button class="film-details__comment-delete" id="${id}">Delete</button>
           </p>
         </div>
       </li>`;

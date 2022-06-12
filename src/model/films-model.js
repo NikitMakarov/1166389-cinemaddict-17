@@ -56,36 +56,42 @@ export default class FilmsModel extends Observable {
     }
   };
 
-  deleteComment = (updateType, film, evt) => {
-    const buttonId = parseInt(evt.target.id, 10);
-    const index = this.#comments.findIndex((comment) => comment.filmId === buttonId);
+  deleteComment = async (updateType, film, evt) => {
+    const buttonId = evt.target.id;
+    const index = film.comments.findIndex((comment) => comment.id === buttonId);
 
     if (index === -1) {
       throw new Error('Can\'t delete unexisting comment');
     }
 
-    this.#comments.splice(index, 1);
-    this._notify(updateType, film);
+    try {
+      const commentInfo = film.comments[index];
+      await this.#filmsApiService.deleteComment(commentInfo);
+
+      film.comments.splice(index, 1);
+      this._notify(updateType, film);
+    } catch(err) {
+      'Can\'t delete comment'
+    }
   };
 
-  addComment = (updateType, update) => {
-    const newComment = {
-      filmId: 1,
-      author: 'mock author',
-      comment: update.inputComment,
-      date: new Date(),
-      emotion: update.selectedEmoji
-    };
+  addComment = async (updateType, update) => {
+    try {
+      const newComment = {
+        id: update.id,
+        author: 'mock author',
+        comment: update.inputComment,
+        date: new Date(),
+        emotion: update.selectedEmoji
+      };
 
-    const updatedIndexes = update.comments.map((comment) => comment.filmId ? comment.filmId : comment);
-
-    if (update.comments.length === 0) {
-      updatedIndexes.push(newComment.filmId);
+      await this.#filmsApiService.addComment(newComment);
+      update.comments.push(newComment);
+      this._notify(updateType, update);
+    } catch(err) {
+      throw new Error('Can\'t add comment');
     }
 
-    update.comments = updatedIndexes;
-
-    this.#comments.push(newComment);
     this._notify(updateType, update);
   };
 
