@@ -71,7 +71,7 @@ export default class FilmsModel extends Observable {
       film.comments.splice(index, 1);
       this._notify(updateType, film);
     } catch(err) {
-      'Can\'t delete comment'
+      throw new Error('Can\'t delete comment');
     }
   };
 
