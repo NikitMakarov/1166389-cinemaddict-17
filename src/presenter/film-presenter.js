@@ -57,7 +57,9 @@ export default class FilmPresenter {
     replace(this.#filmComponent, prevFilmComponent);
 
     if (this.#mode === Mode.POPUP) {
+      const prevScrollPosition = prevPopUpComponent.element.scrollTop;
       replace(this.#popUpComponent, prevPopUpComponent);
+      this.#popUpComponent._returnScrollTo(prevScrollPosition);
     }
 
     remove(prevFilmComponent);

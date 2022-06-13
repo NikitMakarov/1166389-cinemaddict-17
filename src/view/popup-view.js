@@ -217,7 +217,6 @@ export default class PopUpView extends AbstractStatefulView {
       if (this._state.inputComment && this._state.selectedEmoji) {
         this._callback.addComment(this._state);
       }
-      this.#restoreScrollPosition();
     }
   };
 
@@ -227,7 +226,6 @@ export default class PopUpView extends AbstractStatefulView {
     }
 
     this._callback.deleteClick(evt);
-    this.#restoreScrollPosition();
   };
 
   #closePopUpClickHandler = (evt) => {
@@ -237,17 +235,14 @@ export default class PopUpView extends AbstractStatefulView {
 
   #watchListClickHandler = () => {
     this._callback.watchListClick();
-    this.#restoreScrollPosition();
   };
 
   #watchedClickHandler = () => {
     this._callback.watchedClick();
-    this.#restoreScrollPosition();
   };
 
   #favoriteClickHandler = () => {
     this._callback.favoriteClick();
-    this.#restoreScrollPosition();
   };
 
   #emojiClickHandler = (evt) => {
@@ -258,7 +253,6 @@ export default class PopUpView extends AbstractStatefulView {
 
       this.updateElement({selectedEmoji: emojiName, clickedInput: clickedInput.value});
     }
-    this.#restoreScrollPosition();
   };
 
   #commentInputHandler = (evt) => {
@@ -267,14 +261,8 @@ export default class PopUpView extends AbstractStatefulView {
     });
   };
 
-  #scrollHandler = () => {
-    this._state.scrollPosition = this.element.scrollTop;
-  };
-
-  #restoreScrollPosition = () => {
-    const popUp = document.querySelector('.film-details');
-
-    popUp.scrollTo(0, this._state.scrollPosition);
+  _returnScrollTo = (prevPosition) => {
+    this.element.scrollTo(0, prevPosition);
   };
 
   #setInnerHandlers = () => {
@@ -282,7 +270,6 @@ export default class PopUpView extends AbstractStatefulView {
       .addEventListener('click', this.#emojiClickHandler);
     this.element.querySelector('.film-details__comment-input')
       .addEventListener('input', this.#commentInputHandler);
-    this.element.addEventListener('scroll', this.#scrollHandler);
   };
 
   static parseDataToState = (film, mode) => ({
