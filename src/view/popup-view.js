@@ -221,6 +221,8 @@ export default class PopUpView extends AbstractStatefulView {
   };
 
   #deleteClickHandler = (evt) => {
+    evt.preventDefault();
+    console.log(evt.target.tagName);
     if (evt.target.tagName !== 'BUTTON') {
       return;
     }
