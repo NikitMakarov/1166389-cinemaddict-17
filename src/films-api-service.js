@@ -18,7 +18,7 @@ export default class FilmsApiService extends ApiService {
       url: `movies/${film.id}`,
       method: Method.PUT,
       body: JSON.stringify(this.#adaptToServer(film)),
-      headers: new Headers({'Content-Type': 'application/json'}),
+      headers: new Headers({'Content-Type': 'application/json'})
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
@@ -40,7 +40,7 @@ export default class FilmsApiService extends ApiService {
   deleteComment = async (comment) => {
     const response = await this._load({
       url: `comments/${comment.id}`,
-      method: Method.DELETE,
+      method: Method.DELETE
     });
 
     return response;
@@ -60,11 +60,11 @@ export default class FilmsApiService extends ApiService {
   };
 
   #adaptToServer = (film) => {
-    const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description, ageRating, director, writers, actors, isFavorite, isWatchList, isWatched, comments, watchingDate} = film;
+    const {id, title, totalRating, release, runtime, genres, poster, alternativeTitle, description, ageRating, director, writers, actors, isFavorite, isWatchList, isWatched, comments, watchingDate} = film;
     const {date, releaseCountry} = release;
     const dateRelease = {
       'date': date !== null ? new Date(date) : date,
-      'release_country': releaseCountry,
+      'release_country': releaseCountry
     };
 
     const userDetails = {
@@ -86,31 +86,15 @@ export default class FilmsApiService extends ApiService {
       'runtime': runtime,
       'title': title,
       'total_rating': totalRating,
-      'writers': writers,
+      'writers': writers
     };
 
-    const adaptedFilmToServer = {...film,
+    const adaptedFilmToServer = {
+      'id': id,
       'comments': comments,
       'film_info': filmInfo,
-      'user_details': userDetails,
+      'user_details': userDetails
     };
-
-    delete adaptedFilmToServer.actors;
-    delete adaptedFilmToServer.ageRating;
-    delete adaptedFilmToServer.alternativeTitle;
-    delete adaptedFilmToServer.totalRating;
-    delete adaptedFilmToServer.description;
-    delete adaptedFilmToServer.director;
-    delete adaptedFilmToServer.genres;
-    delete adaptedFilmToServer.poster;
-    delete adaptedFilmToServer.release;
-    delete adaptedFilmToServer.runtime;
-    delete adaptedFilmToServer.title;
-    delete adaptedFilmToServer.writers;
-    delete adaptedFilmToServer.isWatchList;
-    delete adaptedFilmToServer.isWatched;
-    delete adaptedFilmToServer.isFavorite;
-    delete adaptedFilmToServer.watchingDate;
 
     return adaptedFilmToServer;
   };
