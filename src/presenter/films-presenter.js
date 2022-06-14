@@ -6,6 +6,7 @@ import FilmsListView  from '../view/films-list-view.js';
 import FilmsListEmptyView  from '../view/films-list-empty.js';
 import FilmsTopRatedView from '../view/films-top-rated-view.js';
 import FilmsMostCommentedView from '../view/films-most-commented-view.js';
+import FilmsLoadingView from '../view/films-loading-view.js';
 import FilmPresenter from './film-presenter.js';
 
 import {render, RenderPosition, remove} from '../framework/render.js';
@@ -23,6 +24,7 @@ export default class FilmsPresenter {
   #filmsSection = new FilmSection();
   #filmsList = new FilmsListView();
   #filmsComponent = new FilmsContainerView();
+  #loadingComponent = new FilmsLoadingView();
   #noFilmComponent = null;
   #sortComponent = null;
   #showMoreComponent = null;
@@ -33,6 +35,7 @@ export default class FilmsPresenter {
   #filmPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.ALL;
+  #isLoading = true;
 
   constructor(filmsContainer, filmsModel, filterModel) {
     this.#filmsContainer = filmsContainer;
@@ -58,10 +61,6 @@ export default class FilmsPresenter {
     return filteredFilms;
   }
 
-  get comments() {
-    return this.#filmsModel.comments;
-  }
-
   init = () => {
     this.#renderFilmList();
   };
@@ -80,7 +79,7 @@ export default class FilmsPresenter {
   };
 
   #renderFilm = (film) => {
-    const filmPresenter = new FilmPresenter(this.#filmsComponent.element, this.comments, this.#handleViewAction, this.#handleModeChange);
+    const filmPresenter = new FilmPresenter(this.#filmsComponent.element, this.#handleViewAction, this.#handleModeChange);
     filmPresenter.init(film);
     this.#filmPresenter.set(film.id, filmPresenter);
   };
@@ -140,6 +139,12 @@ export default class FilmsPresenter {
         this.#clearFilmBoard({resetRenderedFilmCount: true, resetSortType: true});
         this.#renderFilmList();
         break;
+      case UpdateType.INIT_DATA:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#clearFilmBoard({resetRenderedFilmCount: true, resetSortType: true});
+        this.#renderFilmList();
+        break;
     }
   };
 
@@ -160,6 +165,7 @@ export default class FilmsPresenter {
     }
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
     remove(this.#showMoreComponent);
     remove(this.#mostViewedComponent);
     remove(this.#topRatedComponent);
@@ -191,6 +197,11 @@ export default class FilmsPresenter {
   };
 
   #renderDisplayedFilms = () => {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     const filmCount = this.films.length;
 
     if (filmCount === 0) {
@@ -215,5 +226,9 @@ export default class FilmsPresenter {
   #renderMostCommentedView = () => {
     this.#mostViewedComponent = new FilmsMostCommentedView();
     render(this.#mostViewedComponent, this.#filmsSection.element, RenderPosition.BEFOREEND);
+  };
+
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#filmsList.element);
   };
 }

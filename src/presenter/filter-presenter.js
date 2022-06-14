@@ -67,7 +67,6 @@ export default class NavigationFilterPresenter {
   };
 
   #handleFilterTypeClick = (filterType) => {
-
     if (this.#filterModel.filter === filterType) {
       return;
     }
