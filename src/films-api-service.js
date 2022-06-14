@@ -21,9 +21,7 @@ export default class FilmsApiService extends ApiService {
       headers: new Headers({'Content-Type': 'application/json'})
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   };
 
   getComments = async (film) => {
@@ -32,9 +30,7 @@ export default class FilmsApiService extends ApiService {
       method: Method.GET
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   };
 
   deleteComment = async (comment) => {
@@ -54,9 +50,7 @@ export default class FilmsApiService extends ApiService {
       headers: new Headers({'Content-Type': 'application/json'}),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   };
 
   #adaptToServer = (film) => {
@@ -75,23 +69,23 @@ export default class FilmsApiService extends ApiService {
     };
 
     const filmInfo = {
-      'actors': actors,
+      actors,
       'age_rating': ageRating,
       'alternative_title': alternativeTitle,
-      'description': description,
-      'director': director,
+      description,
+      director,
       'genre': genres,
-      'poster': poster,
+      poster,
       'release': dateRelease,
-      'runtime': runtime,
-      'title': title,
+      runtime,
+      title,
       'total_rating': totalRating,
-      'writers': writers
+      writers
     };
 
     const adaptedFilmToServer = {
-      'id': id,
-      'comments': comments,
+      id,
+      comments,
       'film_info': filmInfo,
       'user_details': userDetails
     };

@@ -24,4 +24,7 @@ const UpdateType = {
   INIT_DATA: 'INIT_DATA'
 };
 
-export {FilterType, SortType, UserAction, UpdateType};
+const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
+const AUTHORIZATION = 'Basic vF4sfS78wck9su2w';
+
+export {FilterType, SortType, UserAction, UpdateType, END_POINT, AUTHORIZATION};

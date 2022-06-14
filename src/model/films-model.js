@@ -98,13 +98,12 @@ export default class FilmsModel extends Observable {
   };
 
   #adaptToClient = (film) => {
-    const dateRelease = {
+    const release = {
       'date': film.film_info.release.date !== null ? new Date(film.film_info.release.date) : film.film_info.release.date,
       'releaseCountry': film.film_info.release.release_country,
     };
 
     const adaptedFilmToClient = {...film,
-      'comments': film.comments,
       'actors': film.film_info.actors,
       'ageRating': film.film_info.age_rating,
       'alternativeTitle': film.film_info.alternative_title,
@@ -112,7 +111,7 @@ export default class FilmsModel extends Observable {
       'genres': film.film_info.genre,
       'director': film.film_info.director,
       'poster': film.film_info.poster,
-      'release': dateRelease,
+      'release': release,
       'runtime': film.film_info.runtime,
       'title': film.film_info.title,
       'totalRating': film.film_info.total_rating,
