@@ -99,9 +99,7 @@ export default class FilmCardView extends AbstractStatefulView {
     this._callback.favoriteClick();
   };
 
-  _getUpdatingControls = () => {
-    return this.element.querySelector('.film-card__controls');
-  };
+  _getUpdatingControls = () => this.element.querySelector('.film-card__controls');
 
   static parseDataToState = (film) => ({
     ...film,

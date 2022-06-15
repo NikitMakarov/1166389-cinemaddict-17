@@ -85,7 +85,7 @@ export default class FilmPresenter {
     this.#popUpComponent.updateElement({
       isDisabled: true
     });
-  }
+  };
 
   setDeleting = () => {
     this.#popUpComponent.updateElement({

@@ -118,27 +118,27 @@ export default class FilmsPresenter {
     switch (actionType) {
       case UserAction.ADD_COMMENT:
         this.#filmPresenter.get(update.id).setCommenting();
-          try {
-            await this.#filmsModel.addComment(updateType, update);
-          } catch(err) {
-            this.#filmPresenter.get(update.id).setCommentingAborting();
-          }
+        try {
+          await this.#filmsModel.addComment(updateType, update);
+        } catch (err) {
+          this.#filmPresenter.get(update.id).setCommentingAborting();
+        }
         break;
       case UserAction.UPDATE_FILM:
         this.#filmPresenter.get(update.id).setUpdating();
-          try {
-            await this.#filmsModel.updateFilm(updateType, update);
-          } catch(err) {
-            this.#filmPresenter.get(update.id).setUpdatingAborting();
-          }
+        try {
+          await this.#filmsModel.updateFilm(updateType, update);
+        } catch (err) {
+          this.#filmPresenter.get(update.id).setUpdatingAborting();
+        }
         break;
       case UserAction.DELETE_COMMENT:
         this.#filmPresenter.get(update.id).setDeleting();
-          try {
-            await this.#filmsModel.deleteComment(updateType, update, evt);
-          } catch(err) {
-            this.#filmPresenter.get(update.id).setDeletingAborting(evt);
-          }
+        try {
+          await this.#filmsModel.deleteComment(updateType, update, evt);
+        } catch (err) {
+          this.#filmPresenter.get(update.id).setDeletingAborting(evt);
+        }
         break;
     }
 

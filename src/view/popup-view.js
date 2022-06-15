@@ -273,25 +273,19 @@ export default class PopUpView extends AbstractStatefulView {
     this.element.scrollTo(0, prevPosition);
   };
 
-  _getUpdatingControls = () => {
-    return this.element.querySelector('.film-details__controls');
-  };
+  _getUpdatingControls = () => this.element.querySelector('.film-details__controls');
 
-  _getDeletingComment = (evt) => {
-    return this.element.querySelector(`button[id='${evt.target.id}']`).closest('li');
-  };
+  _getDeletingComment = (evt) => this.element.querySelector(`button[id='${evt.target.id}']`).closest('li');
 
-  _getCommentForm = () => {
-    return this.element.querySelector('.film-details__new-comment');
-  }
+  _getCommentForm = () => this.element.querySelector('.film-details__new-comment');
 
-  _shakeElement(callback, element) {
+  _shakeElement = (callback, element) => {
     element.classList.add(SHAKE_CLASS_NAME);
     setTimeout(() => {
       element.classList.remove(SHAKE_CLASS_NAME);
       callback?.();
     }, SHAKE_ANIMATION_TIMEOUT);
-  }
+  };
 
   #setInnerHandlers = () => {
     this.element.querySelector('.film-details__emoji-list')
