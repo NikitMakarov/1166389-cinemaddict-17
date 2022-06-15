@@ -77,6 +77,81 @@ export default class FilmPresenter {
     }
   };
 
+  setUpdating = () => {
+    this.#filmComponent.updateElement({
+      isDisabled: true
+    });
+
+    this.#popUpComponent.updateElement({
+      isDisabled: true
+    });
+  }
+
+  setDeleting = () => {
+    this.#popUpComponent.updateElement({
+      isDisabled: true,
+      isDeleting: true
+    });
+  };
+
+  setCommenting = () => {
+    this.#popUpComponent.updateElement({
+      isDisabled: true
+    });
+  };
+
+  setUpdatingAborting = () => {
+    const resetFormState = () => {
+      if (this.#mode !== Mode.DEFAULT) {
+        this.#popUpComponent.updateElement({
+          isDisabled: false
+        });
+      } else {
+        this.#filmComponent.updateElement({
+          isDisabled: false
+        });
+      }
+    };
+
+    if (this.#mode !== Mode.DEFAULT) {
+      const popUpControls = this.#popUpComponent._getUpdatingControls();
+
+      this.#popUpComponent._shakeElement(resetFormState, popUpControls);
+    } else {
+      const filmControls = this.#filmComponent._getUpdatingControls();
+
+      this.#popUpComponent._shakeElement(resetFormState, filmControls);
+    }
+  };
+
+  setDeletingAborting = (evt) => {
+    const resetFormState = () => {
+      this.#popUpComponent.updateElement({
+        isDisabled: false,
+        isDeleting: false
+      });
+    };
+
+    const deletingComment = this.#popUpComponent._getDeletingComment(evt);
+
+    this.#popUpComponent._shakeElement(resetFormState, deletingComment);
+  };
+
+  setCommentingAborting = () => {
+    const resetFormState = () => {
+      this.#popUpComponent.updateElement({
+        isDisabled: false,
+        inputComment: '',
+        selectedEmoji: '',
+        clickedInput: ''
+      });
+    };
+
+    const commentForm = this.#popUpComponent._getCommentForm();
+
+    this.#popUpComponent._shakeElement(resetFormState, commentForm);
+  };
+
   #createPopUp = () => {
     this.#siteBody.appendChild(this.#popUpComponent.element);
     this.#siteBody.classList.add('hide-overflow');
@@ -96,7 +171,7 @@ export default class FilmPresenter {
     this.#changeData(
       UserAction.UPDATE_FILM,
       this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
-      {...this.#film, isWatchList: !this.#film.isWatchList},
+      {...this.#film, isWatchList: !this.#film.isWatchList}
     );
   };
 
@@ -104,7 +179,7 @@ export default class FilmPresenter {
     this.#changeData(
       UserAction.UPDATE_FILM,
       this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
-      {...this.#film, isWatched: !this.#film.isWatched},
+      {...this.#film, isWatched: !this.#film.isWatched}
     );
   };
 
@@ -112,7 +187,7 @@ export default class FilmPresenter {
     this.#changeData(
       UserAction.UPDATE_FILM,
       this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
-      {...this.#film, isFavorite: !this.#film.isFavorite},
+      {...this.#film, isFavorite: !this.#film.isFavorite}
     );
   };
 

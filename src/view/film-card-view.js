@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {humanizeDate, formatRuntime} from '../utils/task.js';
 
 const BLANK_FILM = {
@@ -18,8 +18,7 @@ const BLANK_FILM = {
 };
 
 const createFilmCardTemplate = (film) => {
-  const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description, comments, isFavorite, isWatchList, isWatched} = film;
-
+  const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description, comments, isFavorite, isWatchList, isWatched, isDisabled} = film;
   const releaseDate = humanizeDate(release.date, 'YYYY');
   return (`
   <article class="film-card">
@@ -36,25 +35,32 @@ const createFilmCardTemplate = (film) => {
       <span class="film-card__comments">${comments.length} comments</span>
     </a>
     <div class="film-card__controls">
-      <button class="film-card__controls-item ${isWatchList ? 'film-card__controls-item--active' : ''} film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
-      <button class="film-card__controls-item ${isWatched ? 'film-card__controls-item--active' : ''} film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
-      <button class="film-card__controls-item ${isFavorite ? 'film-card__controls-item--active' : ''} film-card__controls-item--favorite" type="button">Mark as favorite</button>
+      <button class="film-card__controls-item ${isWatchList ? 'film-card__controls-item--active' : ''} film-card__controls-item--add-to-watchlist" type="button" ${isDisabled ? 'disabled' : ''}>Add to watchlist</button>
+      <button class="film-card__controls-item ${isWatched ? 'film-card__controls-item--active' : ''} film-card__controls-item--mark-as-watched" type="button" ${isDisabled ? 'disabled' : ''}>Mark as watched</button>
+      <button class="film-card__controls-item ${isFavorite ? 'film-card__controls-item--active' : ''} film-card__controls-item--favorite" type="button" ${isDisabled ? 'disabled' : ''}>Mark as favorite</button>
     </div>
   </article>`
   );
 };
 
-export default class FilmCardView extends AbstractView {
-  #film = null;
+export default class FilmCardView extends AbstractStatefulView {
+  _state = null;
 
   constructor(film = BLANK_FILM) {
     super();
-    this.#film = film;
+    this._state = FilmCardView.parseDataToState(film);
   }
 
   get template() {
-    return createFilmCardTemplate(this.#film);
+    return createFilmCardTemplate(this._state);
   }
+
+  _restoreHandlers = () => {
+    this.setWatchListClickHandler(this._callback.watchListClick);
+    this.setWatchedClickHandler(this._callback.watchedClick);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setOpenPopUpClickHandler(this._callback.openPopUp);
+  };
 
   setOpenPopUpClickHandler = (callback) => {
     this._callback.openPopUp = callback;
@@ -78,7 +84,7 @@ export default class FilmCardView extends AbstractView {
 
   #openPopUpClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.openPopUp(this.#film);
+    this._callback.openPopUp(this._state);
   };
 
   #watchListClickHandler = () => {
@@ -92,4 +98,13 @@ export default class FilmCardView extends AbstractView {
   #favoriteClickHandler = () => {
     this._callback.favoriteClick();
   };
+
+  _getUpdatingControls = () => {
+    return this.element.querySelector('.film-card__controls');
+  };
+
+  static parseDataToState = (film) => ({
+    ...film,
+    isDisabled: false,
+  });
 }
