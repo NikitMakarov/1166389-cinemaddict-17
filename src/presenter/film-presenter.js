@@ -1,8 +1,9 @@
 import PopUpView from '../view/popup-view.js';
 import FilmCardView from '../view/film-card-view.js';
-import {UserAction, UpdateType} from '../const.js';
+import {UserAction, UpdateType, TimeLimit} from '../const.js';
 
 import {render, replace, remove} from '../framework/render.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -20,6 +21,7 @@ export default class FilmPresenter {
   #siteBody = null;
   #filmComponent = null;
   #popUpComponent = null;
+  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT)
 
   constructor(filmContainer, changeData, changeMode) {
     this.#filmContainer = filmContainer;
@@ -141,6 +143,7 @@ export default class FilmPresenter {
   };
 
   #handleWatchListClick = async () => {
+    this.#uiBlocker.block();
     try {
       await this.#changeData(
         UserAction.UPDATE_FILM,
@@ -148,11 +151,14 @@ export default class FilmPresenter {
         {...this.#film, isWatchList: !this.#film.isWatchList}
       );
     } catch (err) {
+      this.#uiBlocker.unblock();
       this.#updatingAborting();
     }
+    this.#uiBlocker.unblock();
   };
 
   #handleWatchedClick = async () => {
+    this.#uiBlocker.block();
     try {
       await this.#changeData(
         UserAction.UPDATE_FILM,
@@ -160,11 +166,14 @@ export default class FilmPresenter {
         { ...this.#film, isWatched: !this.#film.isWatched }
       );
     } catch (err) {
+      this.#uiBlocker.unblock();
       this.#updatingAborting();
     }
+    this.#uiBlocker.unblock();
   };
 
   #handleFavoriteClick = async () => {
+    this.#uiBlocker.block();
     try {
       await this.#changeData(
         UserAction.UPDATE_FILM,
@@ -172,8 +181,10 @@ export default class FilmPresenter {
         { ...this.#film, isFavorite: !this.#film.isFavorite }
       );
     } catch (err) {
+      this.#uiBlocker.unblock();
       this.#updatingAborting();
     }
+    this.#uiBlocker.unblock();
   };
 
   #handleDeleteClick = (evt) => {

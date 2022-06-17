@@ -127,14 +127,11 @@ export default class FilmsPresenter {
         break;
       case UserAction.UPDATE_FILM:
         this.#filmPresenter.get(update.id).setUpdating();
-        this.#uiBlocker.block();
         try {
           await this.#filmsModel.updateFilm(updateType, update);
         } catch (err) {
-          this.#uiBlocker.unblock();
           throw new Error('Can\'t update film');
         }
-        this.#uiBlocker.unblock();
         break;
       case UserAction.DELETE_COMMENT:
         this.#filmPresenter.get(update.id).setDeleting();
