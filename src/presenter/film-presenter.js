@@ -21,7 +21,7 @@ export default class FilmPresenter {
   #siteBody = null;
   #filmComponent = null;
   #popUpComponent = null;
-  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT)
+  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   constructor(filmContainer, changeData, changeMode) {
     this.#filmContainer = filmContainer;
@@ -80,9 +80,11 @@ export default class FilmPresenter {
   };
 
   setUpdating = () => {
+    const prevScrollPosition = this.#popUpComponent.element.scrollTop;
     this.#popUpComponent.updateElement({
       isDisabled: true
     });
+    this.#popUpComponent.element.scrollTop = prevScrollPosition;
   };
 
   setDeleting = () => {
@@ -100,10 +102,13 @@ export default class FilmPresenter {
 
   setDeletingAborting = (evt) => {
     const resetFormState = () => {
+      const prevScrollPosition = this.#popUpComponent.element.scrollTop;
       this.#popUpComponent.updateElement({
         isDisabled: false,
-        isDeleting: false
+        isDeleting: false,
+        scrollTop: this.#popUpComponent.element.scrollTop
       });
+      this.#popUpComponent.element.scrollTop = prevScrollPosition;
     };
 
     const deletingComment = this.#popUpComponent._getDeletingComment(evt);
@@ -113,12 +118,14 @@ export default class FilmPresenter {
 
   setCommentingAborting = () => {
     const resetFormState = () => {
+      const prevScrollPosition = this.#popUpComponent.element.scrollTop;
       this.#popUpComponent.updateElement({
         isDisabled: false,
         inputComment: '',
         selectedEmoji: '',
         clickedInput: ''
       });
+      this.#popUpComponent.element.scrollTop = prevScrollPosition;
     };
 
     const commentForm = this.#popUpComponent._getCommentForm();
@@ -206,9 +213,11 @@ export default class FilmPresenter {
 
   #updatingAborting = () => {
     const resetFormState = () => {
+      const prevScrollPosition = this.#popUpComponent.element.scrollTop;
       this.#popUpComponent.updateElement({
         isDisabled: false
       });
+      this.#popUpComponent.element.scrollTop = prevScrollPosition;
     };
 
     if (this.#mode !== Mode.DEFAULT) {
