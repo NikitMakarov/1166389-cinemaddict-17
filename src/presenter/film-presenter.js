@@ -1,9 +1,8 @@
 import PopUpView from '../view/popup-view.js';
 import FilmCardView from '../view/film-card-view.js';
-import {UserAction, UpdateType, TimeLimit} from '../const.js';
+import {UserAction, UpdateType} from '../const.js';
 
 import {render, replace, remove} from '../framework/render.js';
-import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -21,8 +20,6 @@ export default class FilmPresenter {
   #siteBody = null;
   #filmComponent = null;
   #popUpComponent = null;
-
-  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   constructor(filmContainer, changeData, changeMode) {
     this.#filmContainer = filmContainer;
