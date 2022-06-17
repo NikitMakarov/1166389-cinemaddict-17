@@ -1,8 +1,9 @@
 import PopUpView from '../view/popup-view.js';
 import FilmCardView from '../view/film-card-view.js';
-import {UserAction, UpdateType} from '../const.js';
+import {UserAction, UpdateType, TimeLimit} from '../const.js';
 
 import {render, replace, remove} from '../framework/render.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -20,6 +21,8 @@ export default class FilmPresenter {
   #siteBody = null;
   #filmComponent = null;
   #popUpComponent = null;
+
+  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   constructor(filmContainer, changeData, changeMode) {
     this.#filmContainer = filmContainer;
@@ -78,10 +81,6 @@ export default class FilmPresenter {
   };
 
   setUpdating = () => {
-    this.#filmComponent.updateElement({
-      isDisabled: true
-    });
-
     this.#popUpComponent.updateElement({
       isDisabled: true
     });
@@ -98,30 +97,6 @@ export default class FilmPresenter {
     this.#popUpComponent.updateElement({
       isDisabled: true
     });
-  };
-
-  setUpdatingAborting = () => {
-    const resetFormState = () => {
-      if (this.#mode !== Mode.DEFAULT) {
-        this.#popUpComponent.updateElement({
-          isDisabled: false
-        });
-      } else {
-        this.#filmComponent.updateElement({
-          isDisabled: false
-        });
-      }
-    };
-
-    if (this.#mode !== Mode.DEFAULT) {
-      const popUpControls = this.#popUpComponent._getUpdatingControls();
-
-      this.#popUpComponent._shakeElement(resetFormState, popUpControls);
-    } else {
-      const filmControls = this.#filmComponent._getUpdatingControls();
-
-      this.#popUpComponent._shakeElement(resetFormState, filmControls);
-    }
   };
 
   setDeletingAborting = (evt) => {
@@ -162,33 +137,46 @@ export default class FilmPresenter {
 
   #removePopUp = () => {
     this.#siteBody.classList.remove('hide-overflow');
+    this.#siteBody.removeChild(this.#popUpComponent.element);
     document.removeEventListener('keydown', this.#onEscKeyDown);
 
     this.#mode = Mode.DEFAULT;
   };
 
-  #handleWatchListClick = () => {
-    this.#changeData(
-      UserAction.UPDATE_FILM,
-      this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
-      {...this.#film, isWatchList: !this.#film.isWatchList}
-    );
+  #handleWatchListClick = async () => {
+    try {
+      await this.#changeData(
+        UserAction.UPDATE_FILM,
+        this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
+        {...this.#film, isWatchList: !this.#film.isWatchList}
+      );
+    } catch (err) {
+      this.#updatingAborting();
+    }
   };
 
-  #handleWatchedClick = () => {
-    this.#changeData(
-      UserAction.UPDATE_FILM,
-      this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
-      {...this.#film, isWatched: !this.#film.isWatched}
-    );
+  #handleWatchedClick = async () => {
+    try {
+      await this.#changeData(
+        UserAction.UPDATE_FILM,
+        this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
+        { ...this.#film, isWatched: !this.#film.isWatched }
+      );
+    } catch (err) {
+      this.#updatingAborting();
+    }
   };
 
-  #handleFavoriteClick = () => {
-    this.#changeData(
-      UserAction.UPDATE_FILM,
-      this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
-      {...this.#film, isFavorite: !this.#film.isFavorite}
-    );
+  #handleFavoriteClick = async () => {
+    try {
+      await this.#changeData(
+        UserAction.UPDATE_FILM,
+        this.#mode === Mode.DEFAULT ? UpdateType.SHOW_FILM_LIST : UpdateType.SHOW_POPUP,
+        { ...this.#film, isFavorite: !this.#film.isFavorite }
+      );
+    } catch (err) {
+      this.#updatingAborting();
+    }
   };
 
   #handleDeleteClick = (evt) => {
@@ -208,6 +196,24 @@ export default class FilmPresenter {
     );
   };
 
+  #updatingAborting = () => {
+    const resetFormState = () => {
+      this.#popUpComponent.updateElement({
+        isDisabled: false
+      });
+    };
+
+    if (this.#mode !== Mode.DEFAULT) {
+      const popUpControls = this.#popUpComponent._getUpdatingControls();
+
+      this.#popUpComponent._shakeElement(resetFormState, popUpControls);
+    } else {
+      const filmControls = this.#filmComponent._getUpdatingControls();
+
+      this.#popUpComponent._shakeElement(resetFormState, filmControls);
+    }
+  };
+
   #setOpenPopUpClickHandler = (film) => {
     this.#changeData(
       UserAction.UPDATE_FILM,
@@ -224,14 +230,15 @@ export default class FilmPresenter {
       UpdateType.SHOW_FILM_LIST,
       film
     );
+
     this.#removePopUp();
   };
 
   #onEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
+
       document.addEventListener('keydown', this.#onEscKeyDown);
-      this.#siteBody.removeChild(this.#popUpComponent.element);
       this.#removePopUp();
     }
   };

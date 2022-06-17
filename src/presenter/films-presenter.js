@@ -113,36 +113,41 @@ export default class FilmsPresenter {
   };
 
   #handleViewAction = async (actionType, updateType, update, evt) => {
-    this.#uiBlocker.block();
-
     switch (actionType) {
       case UserAction.ADD_COMMENT:
         this.#filmPresenter.get(update.id).setCommenting();
+        this.#uiBlocker.block();
         try {
           await this.#filmsModel.addComment(updateType, update);
         } catch (err) {
+          this.#uiBlocker.unblock();
           this.#filmPresenter.get(update.id).setCommentingAborting();
         }
+        this.#uiBlocker.unblock();
         break;
       case UserAction.UPDATE_FILM:
         this.#filmPresenter.get(update.id).setUpdating();
+        this.#uiBlocker.block();
         try {
           await this.#filmsModel.updateFilm(updateType, update);
         } catch (err) {
-          this.#filmPresenter.get(update.id).setUpdatingAborting();
+          this.#uiBlocker.unblock();
+          throw new Error('Can\'t update film');
         }
+        this.#uiBlocker.unblock();
         break;
       case UserAction.DELETE_COMMENT:
         this.#filmPresenter.get(update.id).setDeleting();
+        this.#uiBlocker.block();
         try {
           await this.#filmsModel.deleteComment(updateType, update, evt);
         } catch (err) {
+          this.#uiBlocker.unblock();
           this.#filmPresenter.get(update.id).setDeletingAborting(evt);
         }
+        this.#uiBlocker.unblock();
         break;
     }
-
-    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, data) => {

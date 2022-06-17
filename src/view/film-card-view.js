@@ -1,4 +1,4 @@
-import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeDate, formatRuntime} from '../utils/task.js';
 
 const BLANK_FILM = {
@@ -43,16 +43,16 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-export default class FilmCardView extends AbstractStatefulView {
-  _state = null;
+export default class FilmCardView extends AbstractView {
+  #film = null;
 
   constructor(film = BLANK_FILM) {
     super();
-    this._state = FilmCardView.parseDataToState(film);
+    this.#film = film;
   }
 
   get template() {
-    return createFilmCardTemplate(this._state);
+    return createFilmCardTemplate(this.#film);
   }
 
   _restoreHandlers = () => {
@@ -84,7 +84,7 @@ export default class FilmCardView extends AbstractStatefulView {
 
   #openPopUpClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.openPopUp(this._state);
+    this._callback.openPopUp(this.#film);
   };
 
   #watchListClickHandler = () => {
@@ -100,9 +100,4 @@ export default class FilmCardView extends AbstractStatefulView {
   };
 
   _getUpdatingControls = () => this.element.querySelector('.film-card__controls');
-
-  static parseDataToState = (film) => ({
-    ...film,
-    isDisabled: false,
-  });
 }
