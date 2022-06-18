@@ -130,7 +130,7 @@ export default class FilmsPresenter {
         try {
           await this.#filmsModel.updateFilm(updateType, update);
         } catch (err) {
-          throw new Error('Can\'t update film');
+          throw new Error(err.message);
         }
         break;
       case UserAction.DELETE_COMMENT:
