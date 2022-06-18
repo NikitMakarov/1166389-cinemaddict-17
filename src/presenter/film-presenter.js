@@ -237,8 +237,11 @@ export default class FilmPresenter {
       UpdateType.SHOW_POPUP,
       film
     );
-    this.#createPopUp();
-    document.addEventListener('keydown', this.#onEscKeyDown);
+
+    if (this.#mode === Mode.DEFAULT) {
+      this.#createPopUp();
+      document.addEventListener('keydown', this.#onEscKeyDown);
+    }
   };
 
   #setClosePopUpClickHandler = (film) => {
