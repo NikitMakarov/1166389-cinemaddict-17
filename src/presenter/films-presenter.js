@@ -130,6 +130,7 @@ export default class FilmsPresenter {
         try {
           await this.#filmsModel.updateFilm(updateType, update);
         } catch (err) {
+          this.#filmPresenter.get(update.id).setUpdatingAborting();
           throw new Error(err.message);
         }
         break;

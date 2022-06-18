@@ -47,7 +47,7 @@ export default class FilmsModel extends Observable {
 
       this._notify(updateType, fullFilm);
     } catch (err) {
-      throw new Error(`Can\'t update film: ${err.message}`);
+      throw new Error(`Can't update film: ${err.message}`);
     }
   };
 

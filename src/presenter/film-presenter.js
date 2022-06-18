@@ -100,6 +100,14 @@ export default class FilmPresenter {
     });
   };
 
+  setUpdatingAborting = () => {
+    const prevScrollPosition = this.#popUpComponent.element.scrollTop;
+    this.#popUpComponent.updateElement({
+      isDisabled: false
+    });
+    this.#popUpComponent.element.scrollTop = prevScrollPosition;
+  };
+
   setDeletingAborting = (evt) => {
     const resetFormState = () => {
       const prevScrollPosition = this.#popUpComponent.element.scrollTop;
@@ -143,7 +151,7 @@ export default class FilmPresenter {
 
   #removePopUp = () => {
     this.#siteBody.classList.remove('hide-overflow');
-    this.#siteBody.removeChild(this.#popUpComponent.element);
+    remove(this.#popUpComponent);
     document.removeEventListener('keydown', this.#onEscKeyDown);
 
     this.#mode = Mode.DEFAULT;
