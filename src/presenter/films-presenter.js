@@ -202,6 +202,8 @@ export default class FilmsPresenter {
     this.#clearFilmBoard();
     this.#renderSort();
     this.#renderDisplayedFilms();
+    this.#renderTopRatedView();
+    this.#renderMostCommentedView();
   };
 
   #renderSort = () => {
