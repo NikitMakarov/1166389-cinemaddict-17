@@ -1,19 +1,23 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 const getUserProfileRank = (filmsWatched) => {
-  if (filmsWatched > 0 && filmsWatched <= 10) {
-    return 'Novice';
-  } else if (filmsWatched > 10 && filmsWatched <= 20) {
-    return 'Fan';
-  } else if (filmsWatched > 20) {
+  if (filmsWatched > 20) {
     return 'Movie Buff';
-  } else {
-    return '';
   }
+
+  if (filmsWatched > 10) {
+    return 'Fan';
+  }
+
+  if (filmsWatched > 0) {
+    return 'Novice';
+  }
+
+  return '';
 };
 
 const createProfileTemplate = (films) => {
-  const userProfileRank = getUserProfileRank(films.filter((film) => film.isWatched).length);
+  const userProfileRank = getUserProfileRank(films?.filter((film) => film.isWatched).length);
 
   return `<section class="header__profile profile">
     <p class="profile__rating">${userProfileRank}</p>
