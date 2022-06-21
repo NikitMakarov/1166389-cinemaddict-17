@@ -5,6 +5,13 @@ const FilterType = {
   FAVORITES: 'favorites'
 };
 
+const FilterEnum = Object.freeze({
+  ALL: 'all movies',
+  WATCHLIST: 'watchlist',
+  HISTORY: 'watched',
+  FAVORITES: 'favorites'
+});
+
 const SortType = {
   DEFAULT: 'default',
   DATE: 'date',
@@ -36,4 +43,4 @@ const SHAKE_ANIMATION_TIMEOUT = 600;
 const FILM_COUNT_PER_STEP = 5;
 
 
-export {FilterType, SortType, UserAction, UpdateType, END_POINT, AUTHORIZATION, SHAKE_CLASS_NAME, SHAKE_ANIMATION_TIMEOUT, FILM_COUNT_PER_STEP, TimeLimit};
+export {FilterType, SortType, UserAction, UpdateType, END_POINT, AUTHORIZATION, SHAKE_CLASS_NAME, SHAKE_ANIMATION_TIMEOUT, FILM_COUNT_PER_STEP, TimeLimit, FilterEnum};

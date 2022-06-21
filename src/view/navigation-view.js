@@ -1,9 +1,10 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {capitalizeName} from '../utils/filter.js';
+import {FilterEnum} from '../const.js';
 
 const createFilterItemTemplate = (filter, currentFilterType) => {
   const {name, count, type} = filter;
-  return `<a href="#${name}" class="main-navigation__item ${currentFilterType === type ? 'main-navigation__item--active' : ''}" value="${type}">${capitalizeName(name)} ${name === 'all movies' ? '' : `<span class="main-navigation__item-count">${count}</span>`}</a>`;
+  return `<a href="#${name}" class="main-navigation__item ${currentFilterType === type ? 'main-navigation__item--active' : ''}" value="${type}">${capitalizeName(name)} ${name === FilterEnum.ALL ? '' : `<span class="main-navigation__item-count">${count}</span>`}</a>`;
 };
 
 const createNavigationTemplate = (filters, currentFilterType) => {
