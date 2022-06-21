@@ -152,7 +152,7 @@ export default class FilmPresenter {
   #removePopUp = () => {
     this.#siteBody.classList.remove('hide-overflow');
     remove(this.#popUpComponent);
-    document.removeEventListener('keydown', this.#onEscKeyDown);
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
 
     this.#mode = Mode.DEFAULT;
   };
@@ -248,7 +248,7 @@ export default class FilmPresenter {
 
     if (this.#mode === Mode.DEFAULT) {
       this.#createPopUp();
-      document.addEventListener('keydown', this.#onEscKeyDown);
+      document.addEventListener('keydown', this.#handleEscKeyDown);
     }
   };
 
@@ -262,11 +262,11 @@ export default class FilmPresenter {
     this.#removePopUp();
   };
 
-  #onEscKeyDown = (evt) => {
+  #handleEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
 
-      document.addEventListener('keydown', this.#onEscKeyDown);
+      document.addEventListener('keydown', this.#handleEscKeyDown);
       this.#removePopUp();
     }
   };
