@@ -1,14 +1,14 @@
 const FilterType = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
-  HISTORY: 'watched',
+  HISTORY: 'history',
   FAVORITES: 'favorites'
 };
 
 const SortType = {
   DEFAULT: 'default',
   DATE: 'date',
-  RATING: 'rating',
+  RATING: 'rating'
 };
 
 const UserAction = {
@@ -25,8 +25,8 @@ const UpdateType = {
 };
 
 const TimeLimit = {
-  LOWER_LIMIT: 350,
-  UPPER_LIMIT: 1000,
+  LOWER_LIMIT: 450,
+  UPPER_LIMIT: 1000
 };
 
 const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
