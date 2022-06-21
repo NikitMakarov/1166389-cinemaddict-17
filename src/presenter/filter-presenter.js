@@ -1,7 +1,7 @@
 import {render, replace, remove} from '../framework/render.js';
 import NavigationView from '../view/navigation-view.js';
 import {filter} from '../utils/filter.js';
-import {FilterType, UpdateType, FilterEnum} from '../const.js';
+import {FilterType, UpdateType} from '../const.js';
 
 export default class NavigationFilterPresenter {
   #filterContainer = null;
@@ -25,22 +25,18 @@ export default class NavigationFilterPresenter {
     return [
       {
         type: FilterType.ALL,
-        name: FilterEnum.ALL,
         count: filter[FilterType.ALL](films).length,
       },
       {
         type: FilterType.WATCHLIST,
-        name: FilterEnum.WATCHLIST,
         count: filter[FilterType.WATCHLIST](films).length,
       },
       {
         type: FilterType.HISTORY,
-        name: FilterEnum.HISTORY,
         count: filter[FilterType.HISTORY](films).length,
       },
       {
         type: FilterType.FAVORITES,
-        name: FilterEnum.FAVORITES,
         count: filter[FilterType.FAVORITES](films).length,
       },
     ];
