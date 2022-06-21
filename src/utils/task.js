@@ -19,7 +19,7 @@ const formatRuntime = (runtime) => {
 const formatRelativeTime = (runtime) => dayjs().to(dayjs(runtime));
 
 // Функция сортировки фильмов по дате выпуска
-const sortFilmDate = (filmA, filmB) => new Date(humanizeDate(filmA.release.date, 'YYYY-MM-DD')) - new Date(humanizeDate(filmB.release.date, 'YYYY-MM-DD'));
+const sortFilmDate = (filmA, filmB) => new Date(humanizeDate(filmB.release.date, 'YYYY-MM-DD')) - new Date(humanizeDate(filmA.release.date, 'YYYY-MM-DD'));
 
 // Функция сортировки фильмов по пользовательскому рейтингу
 const sortFilmRating = (filmA, filmB) => filmB.totalRating - filmA.totalRating;
