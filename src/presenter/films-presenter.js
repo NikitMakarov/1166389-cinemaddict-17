@@ -199,7 +199,7 @@ export default class FilmsPresenter {
     }
 
     this.#currentSortType = sortType;
-    this.#clearFilmBoard();
+    this.#clearFilmBoard({resetRenderedFilmCount: true});
     this.#renderSort();
     this.#renderDisplayedFilms();
     this.#renderTopRatedView();
