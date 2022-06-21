@@ -3,7 +3,7 @@ import {capitalizeName} from '../utils/filter.js';
 
 const createFilterItemTemplate = (filter, currentFilterType) => {
   const {name, count, type} = filter;
-  return `<a href="#${name}" class="main-navigation__item ${currentFilterType === type ? 'main-navigation__item--active' : ''}" value="${type}">${capitalizeName(name)} <span class="main-navigation__item-count">${count}</span></a>`;
+  return `<a href="#${name}" class="main-navigation__item ${currentFilterType === type ? 'main-navigation__item--active' : ''}" value="${type}">${capitalizeName(name)} ${name === 'all movies' ? '' : `<span class="main-navigation__item-count">${count}</span>`}</a>`;
 };
 
 const createNavigationTemplate = (filters, currentFilterType) => {

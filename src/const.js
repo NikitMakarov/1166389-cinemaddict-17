@@ -25,7 +25,7 @@ const UpdateType = {
 };
 
 const TimeLimit = {
-  LOWER_LIMIT: 350,
+  LOWER_LIMIT: 50,
   UPPER_LIMIT: 1000,
 };
 
