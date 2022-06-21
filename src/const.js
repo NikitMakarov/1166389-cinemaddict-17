@@ -1,7 +1,7 @@
 const FilterType = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
-  HISTORY: 'watched',
+  HISTORY: 'history',
   FAVORITES: 'favorites'
 };
 
