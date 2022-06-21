@@ -3,7 +3,7 @@ import {humanizeDate, formatRuntime, formatRelativeTime} from '../utils/task.js'
 import he from 'he';
 import {SHAKE_CLASS_NAME, SHAKE_ANIMATION_TIMEOUT} from '../const.js';
 
-const createPopUpTemplate = (data) => {
+const createPopupTemplate = (data) => {
   const {title, totalRating, release, runtime, genres, poster, alternativeTitle, description, ageRating, director, writers, actors, isFavorite, isWatchList, isWatched, comments, selectedEmoji, inputComment, clickedInput, isDisabled, isDeleting} = data;
   const {releaseCountry} = release;
   const releaseDate = humanizeDate(release.date, 'DD MMM YYYY');
@@ -157,18 +157,18 @@ const createPopUpTemplate = (data) => {
   );
 };
 
-export default class PopUpView extends AbstractStatefulView {
+export default class PopupView extends AbstractStatefulView {
   _state = null;
 
   constructor(film, mode) {
     super();
-    this._state = PopUpView.parseDataToState(film, mode);
+    this._state = PopupView.parseDataToState(film, mode);
 
     this.#setInnerHandlers();
   }
 
   get template() {
-    return createPopUpTemplate(this._state);
+    return createPopupTemplate(this._state);
   }
 
   _restoreHandlers = () => {

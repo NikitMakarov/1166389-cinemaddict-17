@@ -1,4 +1,4 @@
-import PopUpView from '../view/popup-view.js';
+import PopupView from '../view/popup-view.js';
 import FilmCardView from '../view/film-card-view.js';
 import {UserAction, UpdateType, TimeLimit} from '../const.js';
 
@@ -38,7 +38,7 @@ export default class FilmPresenter {
     this.#siteBody = document.querySelector('body');
 
     this.#filmComponent = new FilmCardView(film);
-    this.#popUpComponent = new PopUpView(film, this.#mode);
+    this.#popUpComponent = new PopupView(film, this.#mode);
 
     this.#filmComponent.setOpenPopUpClickHandler(this.#setOpenPopUpClickHandler);
     this.#filmComponent.setWatchListClickHandler(this.#handleWatchListClick);

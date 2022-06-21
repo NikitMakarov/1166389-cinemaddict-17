@@ -1,7 +1,7 @@
 import {render, remove} from '../framework/render.js';
 import FooterStatisticsView from '../view/footer-statistics-view.js';
 
-export default class StatisticsPresenter {
+export default class FooterStatisticsPresenter {
   #statisticsContainer = null;
   #statisticsComponent = null;
   #filmsModel = null;
