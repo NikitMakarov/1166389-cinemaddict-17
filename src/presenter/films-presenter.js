@@ -3,7 +3,7 @@ import SortView from '../view/sort-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmsSectionView from '../view/films-section-view.js';
 import FilmsListView  from '../view/films-list-view.js';
-import FilmsListEmptyView  from '../view/films-list-empty.js';
+import FilmsListEmptyView  from '../view/films-list-empty-view.js';
 import FilmsTopRatedView from '../view/films-top-rated-view.js';
 import FilmsMostCommentedView from '../view/films-most-commented-view.js';
 import FilmsLoadingView from '../view/films-loading-view.js';
