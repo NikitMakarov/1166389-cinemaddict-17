@@ -1,7 +1,7 @@
 import FilmsContainerView from '../view/films-container-view.js';
 import SortView from '../view/sort-view.js';
-import ShowMoreBtnView from '../view/show-more-button-view.js';
-import FilmSection from '../view/films-section.js';
+import ShowMoreButtonView from '../view/show-more-button-view.js';
+import FilmsSectionView from '../view/films-section-view.js';
 import FilmsListView  from '../view/films-list-view.js';
 import FilmsListEmptyView  from '../view/films-list-empty.js';
 import FilmsTopRatedView from '../view/films-top-rated-view.js';
@@ -20,7 +20,7 @@ export default class FilmsPresenter {
   #filmsModel = null;
   #filterModel = null;
 
-  #filmsSection = new FilmSection();
+  #filmsSectionView = new FilmsSectionView();
   #filmsList = new FilmsListView();
   #filmsComponent = new FilmsContainerView();
   #loadingComponent = new FilmsLoadingView();
@@ -103,7 +103,7 @@ export default class FilmsPresenter {
   };
 
   #renderShowMoreButton = () => {
-    this.#showMoreComponent = new ShowMoreBtnView();
+    this.#showMoreComponent = new ShowMoreButtonView();
     this.#showMoreComponent.setShowMoreClickHandler(this.#handleLoadMoreButtonClick);
     render(this.#showMoreComponent, this.#filmsList.element);
   };
@@ -213,11 +213,11 @@ export default class FilmsPresenter {
   };
 
   #renderSection = () => {
-    render(this.#filmsSection, this.#filmsContainer, RenderPosition.BEFOREEND);
+    render(this.#filmsSectionView, this.#filmsContainer, RenderPosition.BEFOREEND);
   };
 
   #renderList = () => {
-    render(this.#filmsList, this.#filmsSection.element, RenderPosition.BEFOREEND);
+    render(this.#filmsList, this.#filmsSectionView.element, RenderPosition.BEFOREEND);
   };
 
   #renderDisplayedFilms = () => {
@@ -244,12 +244,12 @@ export default class FilmsPresenter {
 
   #renderTopRatedView = () => {
     this.#topRatedComponent = new FilmsTopRatedView();
-    render(this.#topRatedComponent, this.#filmsSection.element, RenderPosition.BEFOREEND);
+    render(this.#topRatedComponent, this.#filmsSectionView.element, RenderPosition.BEFOREEND);
   };
 
   #renderMostCommentedView = () => {
     this.#mostViewedComponent = new FilmsMostCommentedView();
-    render(this.#mostViewedComponent, this.#filmsSection.element, RenderPosition.BEFOREEND);
+    render(this.#mostViewedComponent, this.#filmsSectionView.element, RenderPosition.BEFOREEND);
   };
 
   #renderLoading = () => {
